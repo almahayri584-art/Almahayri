@@ -2648,8 +2648,8 @@
 
   // ── Yorum Gönder ──
   // ── Telegram Bildirim ──
-  const TELEGRAM_TOKEN  = '8794668922:AAG169mVEwetBp1KVsc3u4PBzVbIWWYhlNc';
-  const TELEGRAM_CHATID = '7785870851';
+  const TELEGRAM_TOKEN   = '8794668922:AAG169mVEwetBp1KVsc3u4PBzVbIWWYhlNc';
+  const TELEGRAM_CHATIDS = ['7785870851', '531084220'];
 
   async function getClientInfo() {
     // Cihaz bilgisi
@@ -2681,11 +2681,13 @@
     const { device, browser, ipInfo } = await getClientInfo();
     const message = `🔔 تعليق جديد بانتظار موافقتك!\n\n👤 الاسم: ${name}\n${starsText}\n💬 التعليق: ${text}\n\n📱 الجهاز: ${device} — ${browser}\n🌐 IP: ${ipInfo}\n\n🔗 https://almahayri584-art.github.io/Almahayri/`;
     try {
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHATID, text: message })
-      });
+      await Promise.all(TELEGRAM_CHATIDS.map(chatId =>
+        fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: message })
+        })
+      ));
     } catch(e) {
       console.log('Telegram bildirimi gönderilemedi:', e);
     }
