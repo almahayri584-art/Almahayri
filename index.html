@@ -2350,10 +2350,10 @@
   <span class="admin-toggle" onclick="toggleAdminLogin()">🔐</span>
 
   <!-- Mini Login Formu -->
-  <div id="admin-login-popup" style="display:none; margin-top:14px; display:none; flex-direction:column; align-items:center; gap:8px;">
+  <div id="admin-login-popup" style="display:none; margin-top:14px; flex-direction:column; align-items:center; gap:8px;">
     <input type="email" id="admin-email" class="admin-input" placeholder="البريد الإلكتروني" autocomplete="off">
     <input type="password" id="admin-pass" class="admin-input" placeholder="كلمة المرور">
-    <button class="admin-btn" onclick="window.checkAdmin()">دخول</button>
+    <button class="admin-btn" id="admin-login-btn" onclick="window.checkAdmin()">دخول</button>
     <div id="admin-login-error" style="color:#f87171; font-size:12px; text-align:center; display:none;"></div>
   </div>
 </footer>
@@ -2449,17 +2449,10 @@
   // ── Auth State Listener ──
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Giriş formu gizle
       document.getElementById('admin-login-popup').style.display = 'none';
-      // Yönetim alanını göster
       document.getElementById('admin-management-area').style.display = 'block';
-      // Yorumları yükle
       currentTab = 'pending';
       renderAdminReviews();
-      // Reviews section'a kaydır
-      setTimeout(() => {
-        document.getElementById('admin-management-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
     } else {
       document.getElementById('admin-management-area').style.display = 'none';
       document.getElementById('admin-reviews').innerHTML = '<div class="admin-empty-msg">جارٍ التحميل...</div>';
@@ -2471,7 +2464,7 @@
     const email = document.getElementById('admin-email').value.trim();
     const pass  = document.getElementById('admin-pass').value;
     const errEl = document.getElementById('admin-login-error');
-    const btn   = document.querySelector('#admin-login-form .admin-btn');
+    const btn   = document.getElementById('admin-login-btn');
 
     if (!email || !pass) {
       errEl.textContent = 'يرجى إدخال البريد الإلكتروني وكلمة المرور';
@@ -2485,15 +2478,12 @@
 
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-      // onAuthStateChanged otomatik devralır
     } catch(e) {
-      let msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-      errEl.textContent   = msg;
+      errEl.textContent   = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
       errEl.style.display = 'block';
+      btn.disabled    = false;
+      btn.textContent = 'دخول';
     }
-
-    btn.disabled    = false;
-    btn.textContent = 'دخول';
   }
 
   // ── Admin Çıkış ──
@@ -2653,6 +2643,24 @@
   });
 
   // ── Yorum Gönder ──
+  // ── Telegram Bildirim ──
+  const TELEGRAM_TOKEN  = '8794668922:AAG169mVEwetBp1KVsc3u4PBzVbIWWYhlNc';
+  const TELEGRAM_CHATID = '7785870851';
+
+  async function sendTelegramNotification(name, stars, text) {
+    const starsText = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+    const message = `🔔 تعليق جديد بانتظار موافقتك!\n\n👤 الاسم: ${name}\n${starsText}\n💬 التعليق: ${text}\n\n🔗 https://almahayri584-art.github.io/Almahayri/`;
+    try {
+      await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TELEGRAM_CHATID, text: message })
+      });
+    } catch(e) {
+      console.log('Telegram bildirimi gönderilemedi:', e);
+    }
+  }
+
   window.submitReview = async function() {
     const name = document.getElementById('review-name').value.trim();
     const text = document.getElementById('review-text').value.trim();
@@ -2671,11 +2679,12 @@
         timestamp: Date.now(),
         status: 'pending'
       });
+      // Telegram bildirimi gönder
+      await sendTelegramNotification(name, selectedStars, text);
       document.getElementById('review-name').value = '';
       document.getElementById('review-text').value = '';
       selectedStars = 0;
       document.querySelectorAll('.star-opt').forEach(s => s.classList.remove('active'));
-      // Bilgilendirme modalını göster
       document.getElementById('review-pending-modal').classList.add('show');
     } catch(e) {
       alert('حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى');
