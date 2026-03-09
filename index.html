@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1194,8 +1195,9 @@
 
   .admin-toggle:hover { color: rgba(201,149,42,.5); }
 
+  /* ─── ADMIN BAR & PANEL ─── */
   .admin-panel {
-    max-width: 400px; margin: 14px auto 0;
+    max-width: 420px; margin: 14px auto 0;
     display: flex; flex-direction: column; gap: 10px;
     align-items: center;
   }
@@ -1205,9 +1207,11 @@
     border: 1px solid rgba(255,255,255,.12);
     border-radius: 10px; padding: 10px 16px;
     color: white; font-family: 'Cairo', sans-serif;
-    font-size: 14px; outline: none; width: 200px;
-    text-align: center; letter-spacing: 3px;
+    font-size: 14px; outline: none; width: 220px;
+    text-align: center;
+    transition: border-color .2s;
   }
+  .admin-input:focus { border-color: rgba(201,149,42,.5); }
 
   .admin-btn {
     background: rgba(201,149,42,.2);
@@ -1218,92 +1222,240 @@
     font-size: 13px; font-weight: 700;
     cursor: pointer; transition: all .2s;
   }
+  .admin-btn:hover { background: rgba(201,149,42,.35); border-color: var(--gold); }
 
-  .admin-btn:hover {
-    background: rgba(201,149,42,.35);
-    border-color: var(--gold);
+  /* ─── YORUM YÖNETİM PANELİ ─── */
+  .admin-review-manager {
+    width: 100%;
+    margin-top: 4px;
   }
 
-  .admin-review-item {
-    background: rgba(255,255,255,.05);
+  .admin-manager-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(15, 35, 20, 0.8);
+    border: 1px solid rgba(201,149,42,.25);
+    border-radius: 14px 14px 0 0;
+    padding: 12px 18px;
+  }
+
+  .admin-manager-title {
+    color: var(--gold-light);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .admin-pending-badge {
+    background: #f59e0b;
+    color: #000;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .admin-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .admin-tab {
+    background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.1);
-    border-radius: 12px; padding: 14px 16px;
-    display: flex; align-items: flex-start;
-    gap: 12px; text-align: right; width: 100%;
+    color: rgba(255,255,255,.5);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .admin-tab.active {
+    background: rgba(201,149,42,.25);
+    border-color: rgba(201,149,42,.5);
+    color: var(--gold-light);
+  }
+  .admin-tab:hover:not(.active) {
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.8);
   }
 
-  .admin-review-info { flex: 1; }
+  .admin-reviews-list {
+    background: rgba(8, 20, 12, 0.75);
+    border: 1px solid rgba(201,149,42,.15);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    max-height: 420px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,149,42,.3) transparent;
+  }
+
+  .admin-reviews-list::-webkit-scrollbar { width: 4px; }
+  .admin-reviews-list::-webkit-scrollbar-track { background: transparent; }
+  .admin-reviews-list::-webkit-scrollbar-thumb { background: rgba(201,149,42,.3); border-radius: 4px; }
+
+  .admin-empty-msg {
+    text-align: center;
+    padding: 28px 16px;
+    color: rgba(255,255,255,.3);
+    font-size: 13px;
+  }
+
+  /* ─── YORUM KARTI (Admin) ─── */
+  .admin-review-item {
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    text-align: right;
+    transition: background .2s;
+  }
+  .admin-review-item:last-child { border-bottom: none; }
+  .admin-review-item:hover { background: rgba(255,255,255,.03); }
+
+  .admin-review-info { min-width: 0; }
+
+  .admin-review-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
 
   .admin-review-name {
-    color: var(--gold-light); font-weight: 700;
-    font-size: 13px; margin-bottom: 4px;
+    color: var(--cream);
+    font-weight: 700;
+    font-size: 13px;
   }
+
+  .admin-review-stars {
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .admin-status-badge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .admin-status-badge.pending { background: rgba(245,158,11,.15); color: #fbbf24; border: 1px solid rgba(245,158,11,.3); }
+  .admin-status-badge.approved { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.25); }
 
   .admin-review-text {
-    color: rgba(255,255,255,.6); font-size: 12px;
+    color: rgba(255,255,255,.55);
+    font-size: 12px;
     line-height: 1.6;
+    margin-bottom: 10px;
+    word-break: break-word;
   }
 
+  .admin-review-date {
+    color: rgba(255,255,255,.25);
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+
+  .admin-action-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .admin-approve-btn {
+    background: rgba(34,197,94,.15);
+    border: 1px solid rgba(34,197,94,.3);
+    color: #4ade80;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer; transition: all .2s;
+    white-space: nowrap;
+  }
+  .admin-approve-btn:hover { background: rgba(34,197,94,.28); border-color: #22c55e; }
+
+  .admin-unapprove-btn {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.5);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer; transition: all .2s;
+    white-space: nowrap;
+  }
+  .admin-unapprove-btn:hover { background: rgba(255,255,255,.12); color: rgba(255,255,255,.8); }
+
   .admin-delete-btn {
-    background: rgba(239,68,68,.2);
+    background: rgba(239,68,68,.12);
     color: #fca5a5;
-    border: 1px solid rgba(239,68,68,.3);
-    border-radius: 8px; padding: 6px 12px;
-    font-size: 12px; cursor: pointer;
+    border: 1px solid rgba(239,68,68,.25);
+    border-radius: 8px; padding: 5px 10px;
+    font-size: 11px; cursor: pointer;
     font-family: 'Cairo', sans-serif;
     transition: all .2s; flex-shrink: 0;
     font-weight: 700;
   }
-
-  .admin-delete-btn:hover {
-    background: rgba(239,68,68,.4);
-    border-color: #ef4444;
-  }
+  .admin-delete-btn:hover { background: rgba(239,68,68,.3); border-color: #ef4444; }
 
   .admin-existing-reply {
-    font-size: 12px;
-    color: rgba(201,149,42,.8);
-    margin-top: 6px;
+    font-size: 11px;
+    color: rgba(201,149,42,.7);
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: rgba(201,149,42,.06);
+    border-radius: 6px;
+    border-right: 2px solid rgba(201,149,42,.3);
     font-style: italic;
   }
 
   .admin-reply-row {
-    display: flex; gap: 8px; margin-top: 10px;
+    display: flex; gap: 6px; margin-top: 8px;
   }
 
   .admin-reply-input {
     flex: 1;
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 7px 10px;
     color: white;
     font-family: 'Cairo', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     outline: none;
     direction: rtl;
     transition: border-color .2s;
+    min-width: 0;
   }
-
-  .admin-reply-input:focus { border-color: rgba(201,149,42,.5); }
-  .admin-reply-input::placeholder { color: rgba(255,255,255,.3); }
+  .admin-reply-input:focus { border-color: rgba(201,149,42,.4); }
+  .admin-reply-input::placeholder { color: rgba(255,255,255,.25); }
 
   .admin-reply-btn {
-    background: rgba(201,149,42,.2);
-    border: 1px solid rgba(201,149,42,.4);
+    background: rgba(201,149,42,.15);
+    border: 1px solid rgba(201,149,42,.3);
     color: var(--gold-light);
     border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 12px; font-weight: 700;
+    padding: 7px 12px;
+    font-size: 11px; font-weight: 700;
     font-family: 'Cairo', sans-serif;
     cursor: pointer; white-space: nowrap;
-    transition: all .2s;
+    transition: all .2s; flex-shrink: 0;
   }
-
-  .admin-reply-btn:hover {
-    background: rgba(201,149,42,.35);
-    border-color: var(--gold);
-  }
+  .admin-reply-btn:hover { background: rgba(201,149,42,.28); border-color: var(--gold); }
 
   /* ─── Review Reply (public) ─── */
   .review-reply {
@@ -1650,6 +1802,77 @@
     .feature-sep { display:none; }
     .herbs-grid { grid-template-columns: repeat(3,1fr); }
   }
+
+  /* ─── ONAY MODAL ─── */
+  .review-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .review-modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .review-modal {
+    background: linear-gradient(160deg, #1a4a2e, #2d6a4f);
+    border: 1px solid rgba(201,149,42,.35);
+    border-radius: 20px;
+    padding: 36px 32px 28px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    transform: translateY(20px) scale(.96);
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    position: relative;
+  }
+  .review-modal-overlay.show .review-modal {
+    transform: translateY(0) scale(1);
+  }
+  .review-modal-icon {
+    font-size: 48px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .review-modal-title {
+    color: var(--gold-light);
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-family: 'Cairo', sans-serif;
+  }
+  .review-modal-text {
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    line-height: 1.7;
+    font-family: 'Cairo', sans-serif;
+    margin-bottom: 24px;
+  }
+  .review-modal-close {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--green-dark);
+    border: none;
+    border-radius: 12px;
+    padding: 11px 32px;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 16px rgba(201,149,42,.4);
+  }
+  .review-modal-close:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,149,42,.5);
+  }
 </style>
 </head>
 <body>
@@ -1907,6 +2130,30 @@
     </div>
     <div class="reviews-grid" id="reviews-grid"></div>
   </div>
+
+  <!-- ADMIN YÖNETİM ALANI — giriş yapınca görünür -->
+  <div id="admin-management-area" style="margin-top: 40px; display:none;">
+    <div class="admin-review-manager">
+      <div class="admin-manager-header">
+        <div class="admin-manager-title">
+          🛡 إدارة التعليقات
+          <span class="admin-pending-badge" id="pending-count-badge">0</span>
+        </div>
+        <div class="admin-tabs">
+          <button class="admin-tab active" id="tab-pending" onclick="switchTab('pending')">⏳ بانتظار</button>
+          <button class="admin-tab" id="tab-approved" onclick="switchTab('approved')">✔ معتمد</button>
+          <button class="admin-tab" id="tab-all" onclick="switchTab('all')">الكل</button>
+        </div>
+      </div>
+      <div class="admin-reviews-list" id="admin-reviews">
+        <div class="admin-empty-msg">جارٍ التحميل...</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:14px;">
+      <button class="admin-btn" onclick="window.adminLogout()" style="padding:8px 20px; font-size:12px;">⬡ تسجيل الخروج</button>
+    </div>
+  </div>
+
 </section>
 
 <!-- STORES -->
@@ -2079,28 +2326,19 @@
   </div>
 </section>
 
-<!-- ADMIN -->
-<div class="admin-bar">
-  <span class="admin-toggle" onclick="toggleAdmin()">🔐 دخول المشرف</span>
-  <div class="admin-panel" id="admin-panel" style="display:none;">
-
-    <!-- Giriş formu -->
-    <div id="admin-login-form" style="display:flex; flex-direction:column; gap:10px; width:100%;">
-      <input type="email" id="admin-email" class="admin-input" placeholder="البريد الإلكتروني" autocomplete="off">
-      <input type="password" id="admin-pass" class="admin-input" placeholder="كلمة المرور">
-      <button class="admin-btn" onclick="window.checkAdmin()">دخول</button>
-      <div id="admin-login-error" style="color:#f87171; font-size:12px; text-align:center; display:none;"></div>
+<!-- ONAY MODAL -->
+<div class="review-modal-overlay" id="review-pending-modal">
+  <div class="review-modal">
+    <span class="review-modal-icon">🔒</span>
+    <div class="review-modal-title">شكراً لك على تعليقك!</div>
+    <div class="review-modal-text">
+      لضمان جودة المحتوى وحماية جميع المستخدمين،<br>
+      سيتم مراجعة تعليقك قبل نشره.<br><br>
+      <strong style="color:var(--gold-light);">سيظهر تعليقك بعد الموافقة عليه ✦</strong>
     </div>
-
-    <!-- Giriş yapıldıktan sonra -->
-    <div id="admin-logged-in" style="display:none; width:100%; flex-direction:column; gap:10px;">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="color:var(--gold-light); font-size:13px; font-weight:700;">✔ مرحباً بك أيها المشرف</span>
-        <button class="admin-btn" onclick="window.adminLogout()" style="padding:6px 14px; font-size:12px;">خروج</button>
-      </div>
-      <div id="admin-reviews" style="margin-top:8px;"></div>
-    </div>
-
+    <button class="review-modal-close" onclick="document.getElementById('review-pending-modal').classList.remove('show')">
+      حسناً، شكراً! ✦
+    </button>
   </div>
 </div>
 
@@ -2108,6 +2346,16 @@
 <footer>
   <span>ALMAHAYRI</span> &nbsp;—&nbsp; مكعبات أعشاب تناسب جميع الأذواق
   <br><br>© 2025 جميع الحقوق محفوظة
+  <br><br>
+  <span class="admin-toggle" onclick="toggleAdminLogin()">🔐</span>
+
+  <!-- Mini Login Formu -->
+  <div id="admin-login-popup" style="display:none; margin-top:14px; display:none; flex-direction:column; align-items:center; gap:8px;">
+    <input type="email" id="admin-email" class="admin-input" placeholder="البريد الإلكتروني" autocomplete="off">
+    <input type="password" id="admin-pass" class="admin-input" placeholder="كلمة المرور">
+    <button class="admin-btn" onclick="window.checkAdmin()">دخول</button>
+    <div id="admin-login-error" style="color:#f87171; font-size:12px; text-align:center; display:none;"></div>
+  </div>
 </footer>
 
 <!-- Navbar JS -->
@@ -2192,23 +2440,29 @@
   }, { threshold: 0.1 });
 
   // ── Admin Panel Toggle ──
-  window.toggleAdmin = function() {
-    const panel = document.getElementById('admin-panel');
-    panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+  window.toggleAdminLogin = function() {
+    const popup = document.getElementById('admin-login-popup');
+    const isVisible = popup.style.display === 'flex';
+    popup.style.display = isVisible ? 'none' : 'flex';
   }
 
   // ── Auth State Listener ──
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Giriş yapılmış
-      document.getElementById('admin-login-form').style.display  = 'none';
-      document.getElementById('admin-logged-in').style.display   = 'flex';
+      // Giriş formu gizle
+      document.getElementById('admin-login-popup').style.display = 'none';
+      // Yönetim alanını göster
+      document.getElementById('admin-management-area').style.display = 'block';
+      // Yorumları yükle
+      currentTab = 'pending';
       renderAdminReviews();
+      // Reviews section'a kaydır
+      setTimeout(() => {
+        document.getElementById('admin-management-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
     } else {
-      // Çıkış yapılmış
-      document.getElementById('admin-login-form').style.display  = 'flex';
-      document.getElementById('admin-logged-in').style.display   = 'none';
-      document.getElementById('admin-reviews').innerHTML          = '';
+      document.getElementById('admin-management-area').style.display = 'none';
+      document.getElementById('admin-reviews').innerHTML = '<div class="admin-empty-msg">جارٍ التحميل...</div>';
     }
   });
 
@@ -2245,39 +2499,86 @@
   // ── Admin Çıkış ──
   window.adminLogout = async function() {
     await signOut(auth);
-    // Panel'i kapat
-    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('admin-management-area').style.display = 'none';
+  }
+
+  // ── Tab Sistemi ──
+  let currentTab = 'pending';
+
+  window.switchTab = function(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    renderAdminReviews();
   }
 
   // ── Admin Yorumları Render ──
   async function renderAdminReviews() {
     const container = document.getElementById('admin-reviews');
-    container.innerHTML = '<p style="color:rgba(255,255,255,.4);font-size:13px;">جارٍ التحميل...</p>';
+    container.innerHTML = '<div class="admin-empty-msg">جارٍ التحميل...</div>';
     const q        = query(reviewsCol, orderBy('timestamp', 'desc'));
     const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-      container.innerHTML = '<p style="color:rgba(255,255,255,.4);font-size:13px;">لا توجد تعليقات</p>';
+
+    // Pending badge güncelle
+    const pendingCount = snapshot.docs.filter(d => !d.data().status || d.data().status === 'pending').length;
+    document.getElementById('pending-count-badge').textContent = pendingCount;
+
+    // Tab'a göre filtrele
+    let docs = snapshot.docs;
+    if (currentTab === 'pending') docs = docs.filter(d => !d.data().status || d.data().status === 'pending');
+    if (currentTab === 'approved') docs = docs.filter(d => d.data().status === 'approved');
+
+    if (docs.length === 0) {
+      container.innerHTML = `<div class="admin-empty-msg">${currentTab === 'pending' ? 'لا توجد تعليقات بانتظار الموافقة ✦' : 'لا توجد تعليقات هنا'}</div>`;
       return;
     }
-    container.innerHTML = snapshot.docs.map(docSnap => {
+
+    container.innerHTML = docs.map(docSnap => {
       const r = docSnap.data();
+      const isPending  = !r.status || r.status === 'pending';
+      const statusBadge = isPending
+        ? `<span class="admin-status-badge pending">⏳ بانتظار</span>`
+        : `<span class="admin-status-badge approved">✔ معتمد</span>`;
+      const actionBtn = isPending
+        ? `<button class="admin-approve-btn" onclick="window.approveReview('${docSnap.id}')">✔ موافقة</button>`
+        : `<button class="admin-unapprove-btn" onclick="window.unapproveReview('${docSnap.id}')">↩ إلغاء</button>`;
       const replyHtml = r.reply
-        ? `<div class="admin-existing-reply">💬 الرد الحالي: ${r.reply}</div>` : '';
+        ? `<div class="admin-existing-reply">💬 ${r.reply}</div>` : '';
       return `
         <div class="admin-review-item">
           <div class="admin-review-info">
-            <div class="admin-review-name">${r.name} ${'★'.repeat(r.stars)}</div>
+            <div class="admin-review-meta">
+              <span class="admin-review-name">${r.name}</span>
+              <span class="admin-review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</span>
+              ${statusBadge}
+            </div>
             <div class="admin-review-text">${r.text}</div>
+            <div class="admin-review-date">${r.date}</div>
             ${replyHtml}
-            <div class="admin-reply-row">
-              <input type="text" class="admin-reply-input" id="reply-${docSnap.id}" placeholder="اكتب ردك هنا..." value="${r.reply || ''}">
-              <button class="admin-reply-btn" onclick="window.saveReply('${docSnap.id}')">💾 حفظ الرد</button>
+            <div class="admin-action-row">
+              ${actionBtn}
+              <div class="admin-reply-row" style="margin-top:0; flex:1;">
+                <input type="text" class="admin-reply-input" id="reply-${docSnap.id}" placeholder="رد على التعليق..." value="${r.reply || ''}">
+                <button class="admin-reply-btn" onclick="window.saveReply('${docSnap.id}')">💾</button>
+              </div>
             </div>
           </div>
-          <button class="admin-delete-btn" onclick="window.deleteReview('${docSnap.id}')">🗑 حذف</button>
+          <button class="admin-delete-btn" onclick="window.deleteReview('${docSnap.id}')">🗑</button>
         </div>
       `;
     }).join('');
+  }
+
+  // ── Yorum Onayla ──
+  window.approveReview = async function(docId) {
+    await updateDoc(doc(db, 'reviews', docId), { status: 'approved' });
+    renderAdminReviews();
+  }
+
+  // ── Onayı Geri Al ──
+  window.unapproveReview = async function(docId) {
+    await updateDoc(doc(db, 'reviews', docId), { status: 'pending' });
+    renderAdminReviews();
   }
 
   // ── Yorum Sil ──
@@ -2305,20 +2606,20 @@
     }
   }
 
-  // ── Yorumları Dinle (Gerçek Zamanlı) ──
+  // ── Yorumları Dinle (Gerçek Zamanlı) — Sadece onaylananlar ──
   function listenReviews() {
     const grid = document.getElementById('reviews-grid');
     grid.innerHTML = '<div class="no-reviews">جارٍ تحميل التعليقات... ✦</div>';
     const q = query(reviewsCol, orderBy('timestamp', 'desc'));
     onSnapshot(q, (snapshot) => {
-      if (snapshot.empty) {
+      const approved = snapshot.docs.filter(d => d.data().status === 'approved');
+      if (approved.length === 0) {
         grid.innerHTML = '<div class="no-reviews">لا توجد تعليقات بعد — كن أول من يعلّق! ✦</div>';
         document.getElementById('reviews-count').textContent = '0 تعليق';
         return;
       }
-      const count = snapshot.docs.length;
-      document.getElementById('reviews-count').textContent = count + ' تعليق';
-      grid.innerHTML = snapshot.docs.map(docSnap => {
+      document.getElementById('reviews-count').textContent = approved.length + ' تعليق';
+      grid.innerHTML = approved.map(docSnap => {
         const r = docSnap.data();
         const replyBlock = r.reply ? `
           <div class="review-reply">
@@ -2367,12 +2668,15 @@
         name, text,
         stars: selectedStars,
         date: new Date().toLocaleDateString('ar-SY'),
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        status: 'pending'
       });
       document.getElementById('review-name').value = '';
       document.getElementById('review-text').value = '';
       selectedStars = 0;
       document.querySelectorAll('.star-opt').forEach(s => s.classList.remove('active'));
+      // Bilgilendirme modalını göster
+      document.getElementById('review-pending-modal').classList.add('show');
     } catch(e) {
       alert('حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى');
       console.error(e);
