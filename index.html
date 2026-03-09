@@ -2543,7 +2543,11 @@
               ${statusBadge}
             </div>
             <div class="admin-review-text">${r.text}</div>
-            <div class="admin-review-date">${r.date}</div>
+            <div class="admin-review-date">
+              📅 ${r.date || '—'}
+              ${r.device ? `&nbsp;|&nbsp; ${r.device}` : ''}
+              ${r.ip ? `&nbsp;|&nbsp; 🌐 ${r.ip}` : ''}
+            </div>
             ${replyHtml}
             <div class="admin-action-row">
               ${actionBtn}
@@ -2647,9 +2651,35 @@
   const TELEGRAM_TOKEN  = '8794668922:AAG169mVEwetBp1KVsc3u4PBzVbIWWYhlNc';
   const TELEGRAM_CHATID = '7785870851';
 
+  async function getClientInfo() {
+    // Cihaz bilgisi
+    const ua = navigator.userAgent;
+    let device = '🖥 masaüstü';
+    if (/Android/i.test(ua)) device = '📱 Android';
+    else if (/iPhone|iPad/i.test(ua)) device = '📱 iOS';
+    else if (/Mobile/i.test(ua)) device = '📱 Mobil';
+
+    let browser = 'Bilinmiyor';
+    if (/Chrome/i.test(ua) && !/Edge/i.test(ua)) browser = 'Chrome';
+    else if (/Firefox/i.test(ua)) browser = 'Firefox';
+    else if (/Safari/i.test(ua)) browser = 'Safari';
+    else if (/Edge/i.test(ua)) browser = 'Edge';
+
+    // IP ve konum
+    let ipInfo = 'Alınamadı';
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      ipInfo = `${data.ip} — ${data.city || ''}, ${data.country_name || ''}`;
+    } catch(e) {}
+
+    return { device, browser, ipInfo };
+  }
+
   async function sendTelegramNotification(name, stars, text) {
     const starsText = '★'.repeat(stars) + '☆'.repeat(5 - stars);
-    const message = `🔔 تعليق جديد بانتظار موافقتك!\n\n👤 الاسم: ${name}\n${starsText}\n💬 التعليق: ${text}\n\n🔗 https://almahayri584-art.github.io/Almahayri/`;
+    const { device, browser, ipInfo } = await getClientInfo();
+    const message = `🔔 تعليق جديد بانتظار موافقتك!\n\n👤 الاسم: ${name}\n${starsText}\n💬 التعليق: ${text}\n\n📱 الجهاز: ${device} — ${browser}\n🌐 IP: ${ipInfo}\n\n🔗 https://almahayri584-art.github.io/Almahayri/`;
     try {
       await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -2672,12 +2702,15 @@
     btn.disabled    = true;
     btn.textContent = '...جارٍ الإرسال';
     try {
+      const { device, browser, ipInfo } = await getClientInfo();
       await addDoc(reviewsCol, {
         name, text,
         stars: selectedStars,
-        date: new Date().toLocaleDateString('ar-SY'),
+        date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: '2-digit', year: 'numeric' }).replace(/\./g, '/'),
         timestamp: Date.now(),
-        status: 'pending'
+        status: 'pending',
+        device: `${device} — ${browser}`,
+        ip: ipInfo
       });
       // Telegram bildirimi gönder
       await sendTelegramNotification(name, selectedStars, text);
