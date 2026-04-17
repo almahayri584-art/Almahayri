@@ -1716,6 +1716,10 @@
   .shop-cart-overlay.open{opacity:1;pointer-events:all;}
   .shop-cart-drawer{position:fixed;top:0;left:0;bottom:0;width:380px;max-width:94vw;background:linear-gradient(160deg,#1a4a2e,#0f2818);border-right:1px solid rgba(201,149,42,0.2);z-index:201;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:8px 0 40px rgba(0,0,0,0.5);}
   .shop-cart-drawer.open{transform:translateX(0);}
+  @media(max-width:600px){
+    .shop-cart-drawer{top:auto;bottom:0;left:0;right:0;width:100%;max-width:100%;max-height:88vh;border-radius:22px 22px 0 0;transform:translateY(100%);border-right:none;border-top:1px solid rgba(201,149,42,0.2);}
+    .shop-cart-drawer.open{transform:translateY(0);}
+  }
   .shop-drawer-header{padding:22px 22px 18px;border-bottom:1px solid rgba(201,149,42,0.15);display:flex;align-items:center;justify-content:space-between;}
   .shop-drawer-header h3{font-family:'Tajawal',sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold-light);}
   .shop-drawer-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:1.4rem;cursor:pointer;transition:opacity .2s;line-height:1;}
@@ -1834,13 +1838,66 @@
   @media(max-width:900px){
     .shop-add-form{grid-template-columns:1fr;gap:16px;}
     .shop-tg-row{grid-template-columns:1fr;}
+    .shop-products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
   }
   @media(max-width:600px){
-    .shop-header{padding:0 16px;height:66px;}
-    .shop-hero{padding:28px 16px 22px;}
-    .shop-products-section{padding:22px 16px 60px;}
-    .shop-admin-panel{padding:0 18px 40px;}
-    .shop-admin-toggle-bar{padding:18px;}
+    /* Header */
+    .shop-header{padding:0 14px;height:60px;}
+    .shop-brand-icon{width:36px;height:36px;font-size:16px;border-radius:10px;}
+    .shop-brand-name{font-size:1.15rem;}
+    .shop-brand-tagline{display:none;}
+    .shop-header-cart{padding:8px 12px;font-size:.82rem;gap:5px;border-radius:10px;}
+    .shop-home-btn{padding:8px 12px;font-size:.8rem;}
+
+    /* Products grid - 2 sütun */
+    .shop-products-section{padding:16px 12px 60px;}
+    .shop-section-head{margin-bottom:16px;}
+    .shop-section-head h2{font-size:1.3rem;}
+    .shop-products-grid{
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+    }
+
+    /* Card */
+    .shop-product-card{border-radius:14px;}
+    .shop-card-img-wrap{height:150px;}
+    .shop-card-img-placeholder{height:150px;font-size:36px;}
+    .shop-card-body{padding:12px;}
+    .shop-card-text{font-size:.82rem;line-height:1.5;margin-bottom:10px;min-height:36px;}
+    .shop-card-price{font-size:.95rem;margin-bottom:8px;}
+
+    /* Miktar kontrolü */
+    .shop-qty-row{padding:6px 10px;margin-bottom:8px;border-radius:10px;}
+    .shop-qty-label{font-size:.72rem;}
+    .shop-qty-btn{width:28px;height:28px;font-size:.95rem;border-radius:7px;}
+    .shop-qty-value{font-size:.95rem;min-width:20px;}
+    .shop-qty-controls{gap:6px;}
+
+    /* Sepete ekle butonu */
+    .shop-btn-add-cart{padding:9px;font-size:.8rem;border-radius:9px;}
+
+    /* Admin butonları */
+    .shop-btn-edit-card,.shop-btn-del-card{padding:6px 0;font-size:.74rem;}
+
+    /* Admin panel */
+    .shop-admin-panel{padding:0 14px 40px;}
+    .shop-admin-toggle-bar{padding:16px 14px;}
+    .shop-tg-row{grid-template-columns:1fr;}
+
+    /* Cart drawer */
+    .shop-cart-drawer{width:100%;border-radius:22px 22px 0 0;bottom:0;top:auto;max-height:90vh;}
+
+    /* Toast */
+    .shop-toast{left:12px;right:12px;bottom:16px;text-align:center;}
+
+    /* Modal */
+    .shop-modal{padding:24px 18px;border-radius:18px;}
+  }
+
+  @media(max-width:360px){
+    .shop-products-grid{grid-template-columns:1fr;}
+    .shop-card-img-wrap{height:180px;}
+    .shop-card-img-placeholder{height:180px;}
   }
 </style>
 </head>
@@ -2362,11 +2419,8 @@
       document.getElementById('admin-login-popup').style.display = 'none';
       // Yönetim alanını göster
       document.getElementById('admin-management-area').style.display = 'block';
-      // Kayıtlı Telegram ayarlarını yükle
-      const savedToken  = localStorage.getItem('review_tg_token') || '';
-      const savedChatId = localStorage.getItem('review_tg_chat')  || '';
-      if (savedToken)  document.getElementById('reviewTgToken').value  = savedToken;
-      if (savedChatId) document.getElementById('reviewTgChatId').value = savedChatId;
+      // Kayıtlı Telegram ayarlarını Firebase'den yükle
+      loadReviewTgSettings();
       // Yorumları yükle
       currentTab = 'pending';
       renderAdminReviews();
@@ -2582,10 +2636,28 @@
   });
 
   // ── Telegram (Yorum Bildirimleri) ──
-  let reviewTgToken  = localStorage.getItem('review_tg_token')  || '';
-  let reviewTgChatId = localStorage.getItem('review_tg_chat')   || '';
+  let reviewTgToken  = '';
+  let reviewTgChatId = '';
 
-  window.saveReviewTgSettings = function() {
+  // Firebase'den review Telegram ayarlarını yükle
+  async function loadReviewTgSettings() {
+    try {
+      const { getDoc, doc: fsDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+      const snap = await getDoc(fsDoc(db, 'settings', 'review_telegram'));
+      if (snap.exists()) {
+        const data = snap.data();
+        reviewTgToken  = data.token  || '';
+        reviewTgChatId = data.chatId || '';
+        const tokenEl  = document.getElementById('reviewTgToken');
+        const chatEl   = document.getElementById('reviewTgChatId');
+        if (tokenEl)  tokenEl.value  = reviewTgToken;
+        if (chatEl)   chatEl.value   = reviewTgChatId;
+      }
+    } catch(e) { console.error('Review TG ayarları yüklenemedi:', e); }
+  }
+  loadReviewTgSettings();
+
+  window.saveReviewTgSettings = async function() {
     reviewTgToken  = document.getElementById('reviewTgToken').value.trim();
     reviewTgChatId = document.getElementById('reviewTgChatId').value.trim();
     const statusEl = document.getElementById('reviewTgStatus');
@@ -2594,8 +2666,13 @@
       statusEl.style.color = '#f87171';
       return;
     }
-    localStorage.setItem('review_tg_token', reviewTgToken);
-    localStorage.setItem('review_tg_chat',  reviewTgChatId);
+    try {
+      const { setDoc, doc: fsDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+      await setDoc(fsDoc(db, 'settings', 'review_telegram'), {
+        token:  reviewTgToken,
+        chatId: reviewTgChatId
+      });
+    } catch(e) { console.error('Review TG ayarları kaydedilemedi:', e); }
     sendReviewTelegram('✅ اختبار ناجح! ستصلك إشعارات التعليقات الجديدة على هذا البوت.').then(ok => {
       statusEl.textContent = ok ? '✓ تم الحفظ والاختبار بنجاح' : '✗ فشل الاتصال — تحقق من Token والـ Chat ID';
       statusEl.style.color = ok ? '#4ade80' : '#f87171';
@@ -2984,15 +3061,38 @@ ${text}
   }
 
   /* ── TELEGRAM ── */
-  let shopTgToken  = localStorage.getItem('tg_token')  || '';
-  let shopTgChatId = localStorage.getItem('tg_chat')   || '';
+  let shopTgToken  = '';
+  let shopTgChatId = '';
 
-  window.shopSaveTgSettings = function(){
+  // Firebase'den shop Telegram ayarlarını yükle
+  async function loadShopTgSettings() {
+    try {
+      const { getDoc, doc: fsDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+      const snap = await getDoc(fsDoc(shopDb, 'settings', 'shop_telegram'));
+      if (snap.exists()) {
+        const data = snap.data();
+        shopTgToken  = data.token  || '';
+        shopTgChatId = data.chatId || '';
+        const tokenEl = document.getElementById('shopTgToken');
+        const chatEl  = document.getElementById('shopTgChatId');
+        if (tokenEl)  tokenEl.value  = shopTgToken;
+        if (chatEl)   chatEl.value   = shopTgChatId;
+      }
+    } catch(e) { console.error('Shop TG ayarları yüklenemedi:', e); }
+  }
+  loadShopTgSettings();
+
+  window.shopSaveTgSettings = async function(){
     shopTgToken  = document.getElementById('shopTgToken').value.trim();
     shopTgChatId = document.getElementById('shopTgChatId').value.trim();
     if(!shopTgToken || !shopTgChatId){ shopShowTgStatus('⚠️ يرجى إدخال Token و Chat ID','err'); return; }
-    localStorage.setItem('tg_token', shopTgToken);
-    localStorage.setItem('tg_chat',  shopTgChatId);
+    try {
+      const { setDoc, doc: fsDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+      await setDoc(fsDoc(shopDb, 'settings', 'shop_telegram'), {
+        token:  shopTgToken,
+        chatId: shopTgChatId
+      });
+    } catch(e) { console.error('Shop TG ayarları kaydedilemedi:', e); }
     shopSendTelegram('✅ اختبار ناجح! ستصلك الطلبات على هذا البوت.').then(ok => {
       shopShowTgStatus(ok ? '✓ تم الحفظ والاختبار بنجاح' : '✗ فشل الاتصال — تحقق من Token والـ Chat ID', ok ? 'ok' : 'err');
     });
@@ -3269,10 +3369,6 @@ ${itemLines}
       el.closest('.shop-ci-field').classList.remove('error');
     });
   });
-
-  // Kayıtlı Telegram ayarlarını yükle
-  if(shopTgToken)  document.getElementById('shopTgToken').value  = shopTgToken;
-  if(shopTgChatId) document.getElementById('shopTgChatId').value = shopTgChatId;
 
   // Drag-and-drop başlat
   shopSetupDrag('shopMainUpload','main');
