@@ -813,6 +813,43 @@
     transform: translateY(-2px);
   }
 
+  .store-img-wrap {
+    width: 100%; height: 120px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    border: 1px solid rgba(201,149,42,.15);
+  }
+
+  .store-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+  }
+
+  .store-card:hover .store-img-wrap img { transform: scale(1.06); }
+
+  .store-admin-del {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(239,68,68,.18);
+    border: 1px solid rgba(239,68,68,.35);
+    color: #f87171;
+    border-radius: 8px;
+    padding: 5px 11px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    transition: all .2s;
+    display: none;
+  }
+
+  .store-card:hover .store-admin-del,
+  .store-admin-del:hover { background: rgba(239,68,68,.32); }
+
+  .stores-admin-mode .store-admin-del { display: block; }
+
   /* ─── REVIEWS ─── */
   .reviews-section {
     padding: 100px 24px;
@@ -2214,50 +2251,58 @@
     <p style="color:var(--text-light); font-size:16px; margin-top:12px;">نتواجد في عدة مواقع لنكون أقرب إليك</p>
   </div>
 
-  <div class="stores-grid">
-    <!-- Store 1 -->
-    <div class="store-card fade-in">
-      <div class="store-icon">🏪</div>
-      <span class="store-number">المتجر 01</span>
-      <div class="store-name">الفرع الأول</div>
-      <p class="store-desc">متجرنا الرئيسي — يضم التشكيلة الكاملة من مكعباتنا العشبية</p>
-      <a href="https://maps.app.goo.gl/HReDRxgo7sRaYLgM7" target="_blank" rel="noopener" class="store-map-btn">
-        📍 عرض على الخريطة
-      </a>
+  <!-- Admin: Add Store Panel (shown only when logged in) -->
+  <div id="store-admin-panel" style="display:none; max-width:860px; margin:0 auto 36px; background:rgba(26,74,46,0.13); border:1.5px solid rgba(201,149,42,.3); border-radius:18px; padding:24px 28px;">
+    <div style="color:var(--gold-light); font-size:15px; font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:8px;">
+      🏪 إضافة متجر جديد
     </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div>
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">اسم المتجر *</label>
+        <input type="text" id="storeAdminName" placeholder="مثال: الفرع الرئيسي"
+          style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:13px; outline:none;">
+      </div>
+      <div>
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">الأيقونة (رمز تعبيري)</label>
+        <input type="text" id="storeAdminIcon" placeholder="🏪" maxlength="4"
+          style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:20px; outline:none; text-align:center;">
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">وصف المتجر</label>
+        <input type="text" id="storeAdminDesc" placeholder="وصف مختصر عن الفرع..."
+          style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:13px; outline:none;">
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">رابط Google Maps *</label>
+        <input type="url" id="storeAdminMap" placeholder="https://maps.app.goo.gl/..." dir="ltr"
+          style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:12px; outline:none;">
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">صورة المتجر (اختياري)</label>
+        <div id="storeAdminImgWrap"
+          onclick="document.getElementById('storeAdminImgInput').click()"
+          style="width:100%; min-height:80px; border:2px dashed rgba(201,149,42,.35); border-radius:10px; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; background:rgba(201,149,42,.04); transition:all .2s; color:var(--text-light); font-size:13px;">
+          <span>📷</span><span>اضغط لاختيار صورة</span>
+        </div>
+        <input type="file" id="storeAdminImgInput" accept="image/*" style="display:none" onchange="storePreviewImage(this)">
+      </div>
+    </div>
+    <div id="storeAdminError" style="color:#ef4444; font-size:12px; margin-top:10px; display:none;"></div>
+    <div style="display:flex; gap:10px; margin-top:16px; justify-content:flex-end;">
+      <button onclick="storeAdminClear()"
+        style="background:transparent; border:1px solid rgba(201,149,42,.3); color:var(--text-light); border-radius:10px; padding:10px 20px; font-family:'Cairo',sans-serif; font-size:13px; cursor:pointer;">
+        مسح
+      </button>
+      <button id="storeAdminSaveBtn" onclick="storeAdminSave()"
+        style="background:linear-gradient(135deg,var(--green-mid),var(--green-dark)); color:white; border:none; border-radius:10px; padding:10px 28px; font-family:'Cairo',sans-serif; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(45,106,79,.3);">
+        ✦ إضافة المتجر
+      </button>
+    </div>
+  </div>
 
-    <!-- Store 2 -->
-    <div class="store-card fade-in">
-      <div class="store-icon">🏬</div>
-      <span class="store-number">المتجر 02</span>
-      <div class="store-name">الفرع الثاني</div>
-      <p class="store-desc">فرعنا في وسط المدينة — خدمة سريعة وتشكيلة واسعة</p>
-      <a href="https://maps.app.goo.gl/HReDRxgo7sRaYLgM7" target="_blank" rel="noopener" class="store-map-btn">
-        📍 عرض على الخريطة
-      </a>
-    </div>
-
-    <!-- Store 3 -->
-    <div class="store-card fade-in">
-      <div class="store-icon">🛒</div>
-      <span class="store-number">المتجر 03</span>
-      <div class="store-name">الفرع الثالث</div>
-      <p class="store-desc">فرعنا الشمالي — متاح طوال أيام الأسبوع بأوقات مرنة</p>
-      <a href="https://maps.app.goo.gl/HReDRxgo7sRaYLgM7" target="_blank" rel="noopener" class="store-map-btn">
-        📍 عرض على الخريطة
-      </a>
-    </div>
-
-    <!-- Store 4 -->
-    <div class="store-card fade-in">
-      <div class="store-icon">🌿</div>
-      <span class="store-number">المتجر 04</span>
-      <div class="store-name">الفرع الرابع</div>
-      <p class="store-desc">فرعنا الجنوبي — تجربة تسوق مميزة وأجواء دافئة</p>
-      <a href="https://maps.app.goo.gl/HReDRxgo7sRaYLgM7" target="_blank" rel="noopener" class="store-map-btn">
-        📍 عرض على الخريطة
-      </a>
-    </div>
+  <!-- Dynamic stores grid -->
+  <div class="stores-grid" id="storesGrid">
+    <div style="grid-column:1/-1; text-align:center; color:var(--text-light); padding:40px;">جارٍ التحميل...</div>
   </div>
 </section>
 
@@ -2733,6 +2778,125 @@ ${text}
 
   // ── Başlat ──
   listenReviews();
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // STORES — Firebase gerçek zamanlı mağaza yönetimi
+  // ═══════════════════════════════════════════════════════════════════════════
+  const storesCol = collection(db, 'stores');
+  let storeAdminMode = false;
+  let storePendingImage = null; // base64
+
+  // Mağazaları gerçek zamanlı dinle
+  function listenStores() {
+    const grid = document.getElementById('storesGrid');
+    onSnapshot(storesCol, (snapshot) => {
+      if (snapshot.empty) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-light); padding:40px; font-size:15px;">لا توجد متاجر مضافة بعد</div>`;
+        return;
+      }
+      // Client tarafında createdAt'e göre sırala (Firestore index gerekmez)
+      const sorted = snapshot.docs.slice().sort((a, b) => (a.data().createdAt || 0) - (b.data().createdAt || 0));
+      let num = 1;
+      grid.innerHTML = sorted.map(docSnap => {
+        const s = docSnap.data();
+        const icon = s.icon || '🏪';
+        const imgHtml = s.image
+          ? `<div class="store-img-wrap"><img src="${s.image}" alt="${s.name}"></div>`
+          : '';
+        const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
+        const n = String(num++).padStart(2,'0');
+        return `
+          <div class="store-card fade-in" style="position:relative;">
+            ${delBtn}
+            ${imgHtml}
+            <div class="store-icon">${icon}</div>
+            <span class="store-number">المتجر ${n}</span>
+            <div class="store-name">${s.name}</div>
+            ${s.desc ? `<p class="store-desc">${s.desc}</p>` : ''}
+            ${s.mapUrl ? `<a href="${s.mapUrl}" target="_blank" rel="noopener" class="store-map-btn">📍 عرض على الخريطة</a>` : ''}
+          </div>`;
+      }).join('');
+      // Admin modu aktifse sınıfı uygula
+      if (storeAdminMode) grid.classList.add('stores-admin-mode');
+    }, (err) => {
+      console.error('Stores onSnapshot error:', err);
+      document.getElementById('storesGrid').innerHTML =
+        `<div style="grid-column:1/-1; text-align:center; color:#ef4444; padding:40px;">⚠️ خطأ في تحميل المتاجر: ${err.message}</div>`;
+    });
+  }
+  listenStores();
+
+  // Admin girişi/çıkışında stores panelini güncelle
+  const _origOnAuth = window.__storeAuthCb;
+  function updateStoreAdminUI(isAdmin) {
+    storeAdminMode = isAdmin;
+    const panel = document.getElementById('store-admin-panel');
+    const grid  = document.getElementById('storesGrid');
+    if (panel) panel.style.display = isAdmin ? 'block' : 'none';
+    if (grid)  grid.classList.toggle('stores-admin-mode', isAdmin);
+  }
+  // onAuthStateChanged zaten yukarıda tanımlı; ek listener ekle
+  onAuthStateChanged(auth, (user) => { updateStoreAdminUI(!!user); });
+
+  // Resim önizleme
+  window.storePreviewImage = function(input) {
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      storePendingImage = e.target.result;
+      const wrap = document.getElementById('storeAdminImgWrap');
+      wrap.innerHTML = `<img src="${storePendingImage}" style="max-height:120px; border-radius:8px; object-fit:cover;">`;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  // Formu temizle
+  window.storeAdminClear = function() {
+    ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap'].forEach(id => {
+      const el = document.getElementById(id); if(el) el.value = '';
+    });
+    storePendingImage = null;
+    document.getElementById('storeAdminImgInput').value = '';
+    document.getElementById('storeAdminImgWrap').innerHTML = `<span>📷</span><span>اضغط لاختيار صورة</span>`;
+    document.getElementById('storeAdminError').style.display = 'none';
+  }
+
+  // Mağaza ekle
+  window.storeAdminSave = async function() {
+    const name   = document.getElementById('storeAdminName').value.trim();
+    const icon   = document.getElementById('storeAdminIcon').value.trim() || '🏪';
+    const desc   = document.getElementById('storeAdminDesc').value.trim();
+    const mapUrl = document.getElementById('storeAdminMap').value.trim();
+    const errEl  = document.getElementById('storeAdminError');
+    const btn    = document.getElementById('storeAdminSaveBtn');
+
+    errEl.style.display = 'none';
+    if (!name) { errEl.textContent = '⚠️ يرجى إدخال اسم المتجر'; errEl.style.display = 'block'; return; }
+    if (!mapUrl) { errEl.textContent = '⚠️ يرجى إدخال رابط Google Maps'; errEl.style.display = 'block'; return; }
+
+    btn.disabled = true; btn.textContent = '...جارٍ الحفظ';
+    try {
+      await addDoc(storesCol, {
+        name, icon, desc, mapUrl,
+        image: storePendingImage || null,
+        createdAt: Date.now()
+      });
+      storeAdminClear();
+    } catch(e) {
+      errEl.textContent = '⚠️ حدث خطأ أثناء الحفظ: ' + e.message;
+      errEl.style.display = 'block';
+      console.error('Store save error:', e);
+    }
+    btn.disabled = false; btn.textContent = '✦ إضافة المتجر';
+  }
+
+  // Mağaza sil
+  window.storeAdminDelete = async function(docId) {
+    if (!confirm('هل تريد حذف هذا المتجر؟')) return;
+    try {
+      await deleteDoc(doc(db, 'stores', docId));
+    } catch(e) { alert('⚠️ فشل الحذف'); console.error(e); }
+  }
 
   document.querySelectorAll('.fade-in').forEach((el, i) => {
     el.style.transitionDelay = `${i * 0.06}s`;
