@@ -1662,6 +1662,17 @@
   .shop-cart-badge{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0f2818;font-size:.7rem;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:0 5px;transition:transform .2s;}
   .shop-cart-badge.pop{animation:popBadge .25s ease;}
   @keyframes popBadge{0%{transform:scale(1);}50%{transform:scale(1.5);}100%{transform:scale(1);}}
+  @media(max-width:600px){
+    .shop-header{padding:0 12px;height:56px;gap:8px;}
+    .shop-brand{gap:8px;flex:1;justify-content:center;}
+    .shop-brand-icon{width:32px;height:32px;font-size:16px;border-radius:9px;flex-shrink:0;}
+    .shop-brand-name{font-size:1.05rem;}
+    .shop-brand-tagline{display:none;}
+    .shop-home-btn{padding:8px 10px;font-size:.8rem;border-radius:10px;gap:4px;animation:none;flex-shrink:0;}
+    .shop-home-label{display:none;}
+    .shop-header-cart{padding:8px 10px;font-size:.82rem;gap:5px;border-radius:10px;flex-shrink:0;}
+    .shop-cart-text{display:none;}
+  }
 
   /* Shop Hero */
   .shop-hero{position:relative;z-index:1;padding:0;text-align:center;overflow:hidden;}
@@ -1716,10 +1727,6 @@
   .shop-cart-overlay.open{opacity:1;pointer-events:all;}
   .shop-cart-drawer{position:fixed;top:0;left:0;bottom:0;width:380px;max-width:94vw;background:linear-gradient(160deg,#1a4a2e,#0f2818);border-right:1px solid rgba(201,149,42,0.2);z-index:201;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:8px 0 40px rgba(0,0,0,0.5);}
   .shop-cart-drawer.open{transform:translateX(0);}
-  @media(max-width:600px){
-    .shop-cart-drawer{top:auto;bottom:0;left:0;right:0;width:100%;max-width:100%;max-height:88vh;border-radius:22px 22px 0 0;transform:translateY(100%);border-right:none;border-top:1px solid rgba(201,149,42,0.2);}
-    .shop-cart-drawer.open{transform:translateY(0);}
-  }
   .shop-drawer-header{padding:22px 22px 18px;border-bottom:1px solid rgba(201,149,42,0.15);display:flex;align-items:center;justify-content:space-between;}
   .shop-drawer-header h3{font-family:'Tajawal',sans-serif;font-size:1.4rem;font-weight:800;color:var(--gold-light);}
   .shop-drawer-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:1.4rem;cursor:pointer;transition:opacity .2s;line-height:1;}
@@ -1841,22 +1848,11 @@
     .shop-products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
   }
   @media(max-width:600px){
-    /* Header */
-    .shop-header{padding:0 14px;height:60px;}
-    .shop-brand-icon{width:36px;height:36px;font-size:16px;border-radius:10px;}
-    .shop-brand-name{font-size:1.15rem;}
-    .shop-brand-tagline{display:none;}
-    .shop-header-cart{padding:8px 12px;font-size:.82rem;gap:5px;border-radius:10px;}
-    .shop-home-btn{padding:8px 12px;font-size:.8rem;}
-
-    /* Products grid - 2 sütun */
+    /* Products */
     .shop-products-section{padding:16px 12px 60px;}
     .shop-section-head{margin-bottom:16px;}
     .shop-section-head h2{font-size:1.3rem;}
-    .shop-products-grid{
-      grid-template-columns: repeat(2, 1fr);
-      gap:12px;
-    }
+    .shop-products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
 
     /* Card */
     .shop-product-card{border-radius:14px;}
@@ -1866,26 +1862,23 @@
     .shop-card-text{font-size:.82rem;line-height:1.5;margin-bottom:10px;min-height:36px;}
     .shop-card-price{font-size:.95rem;margin-bottom:8px;}
 
-    /* Miktar kontrolü */
+    /* Miktar */
     .shop-qty-row{padding:6px 10px;margin-bottom:8px;border-radius:10px;}
     .shop-qty-label{font-size:.72rem;}
     .shop-qty-btn{width:28px;height:28px;font-size:.95rem;border-radius:7px;}
     .shop-qty-value{font-size:.95rem;min-width:20px;}
     .shop-qty-controls{gap:6px;}
-
-    /* Sepete ekle butonu */
     .shop-btn-add-cart{padding:9px;font-size:.8rem;border-radius:9px;}
-
-    /* Admin butonları */
     .shop-btn-edit-card,.shop-btn-del-card{padding:6px 0;font-size:.74rem;}
 
-    /* Admin panel */
+    /* Admin */
     .shop-admin-panel{padding:0 14px 40px;}
     .shop-admin-toggle-bar{padding:16px 14px;}
     .shop-tg-row{grid-template-columns:1fr;}
 
-    /* Cart drawer */
-    .shop-cart-drawer{width:100%;border-radius:22px 22px 0 0;bottom:0;top:auto;max-height:90vh;}
+    /* Cart drawer - aşağıdan açılır */
+    .shop-cart-drawer{top:auto;bottom:0;left:0;right:0;width:100%;max-width:100%;max-height:88vh;border-radius:22px 22px 0 0;transform:translateY(100%);border-right:none;border-top:1px solid rgba(201,149,42,0.2);}
+    .shop-cart-drawer.open{transform:translateY(0);}
 
     /* Toast */
     .shop-toast{left:12px;right:12px;bottom:16px;text-align:center;}
@@ -1893,7 +1886,6 @@
     /* Modal */
     .shop-modal{padding:24px 18px;border-radius:18px;}
   }
-
   @media(max-width:360px){
     .shop-products-grid{grid-template-columns:1fr;}
     .shop-card-img-wrap{height:180px;}
@@ -2773,7 +2765,7 @@ ${text}
   <header class="shop-header">
     <button class="shop-home-btn" onclick="closeShopSection()">
       <span>&#8594;</span>
-      الصفحة الرئيسية
+      <span class="shop-home-label">الصفحة الرئيسية</span>
     </button>
     <div class="shop-brand">
       <div class="shop-brand-icon">🌿</div>
@@ -2784,7 +2776,7 @@ ${text}
     </div>
     <div class="shop-header-cart" onclick="shopToggleCart()">
       <span>🛒</span>
-      <span>السلة</span>
+      <span class="shop-cart-text">السلة</span>
       <span class="shop-cart-badge" id="shopCartBadge">0</span>
     </div>
   </header>
