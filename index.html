@@ -2782,7 +2782,7 @@ ${text}
   // ═══════════════════════════════════════════════════════════════════════════
   // STORES — Firebase gerçek zamanlı mağaza yönetimi
   // ═══════════════════════════════════════════════════════════════════════════
-  const storesCol = collection(db, 'stores');
+  const storesCol = collection(db, 'mağazalar');
   let storeAdminMode = false;
   let storePendingImage = null; // base64
 
@@ -2818,6 +2818,11 @@ ${text}
       }).join('');
       // Admin modu aktifse sınıfı uygula
       if (storeAdminMode) grid.classList.add('stores-admin-mode');
+      // Dinamik eklenen kartları observer'a kaydet (fade-in animasyonu için)
+      grid.querySelectorAll('.fade-in').forEach((el, i) => {
+        el.style.transitionDelay = `${i * 0.07}s`;
+        observer.observe(el);
+      });
     }, (err) => {
       console.error('Stores onSnapshot error:', err);
       document.getElementById('storesGrid').innerHTML =
@@ -2894,7 +2899,7 @@ ${text}
   window.storeAdminDelete = async function(docId) {
     if (!confirm('هل تريد حذف هذا المتجر؟')) return;
     try {
-      await deleteDoc(doc(db, 'stores', docId));
+      await deleteDoc(doc(db, 'mağazalar', docId));
     } catch(e) { alert('⚠️ فشل الحذف'); console.error(e); }
   }
 
