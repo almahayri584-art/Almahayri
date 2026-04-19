@@ -1885,7 +1885,7 @@
     flex:1 1 260px;
     min-width:220px;
     border-radius:16px;
-    padding:18px 22px 18px 54px;
+    padding:18px 22px;
     display:flex;align-items:center;gap:14px;
     border:1px solid rgba(255,255,255,0.12);
     overflow:hidden;
@@ -1925,11 +1925,13 @@
   }
 
   .ann-icon{
-    position:absolute;
-    right:16px;top:50%;transform:translateY(-50%);
-    font-size:22px;
+    font-size:24px;
+    flex-shrink:0;
+    width:32px;
+    text-align:center;
     filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));
   }
+  .ann-icon:empty{display:none;}
   .ann-text{
     font-family:'Tajawal',sans-serif;
     font-size:1rem;font-weight:700;
@@ -2101,8 +2103,8 @@
     .ann-strip{padding:18px 14px 0;}
   }
   @media(max-width:600px){
-    .ann-card{flex:1 1 100%;padding:14px 18px 14px 46px;}
-    .ann-icon{right:12px;font-size:18px;}
+    .ann-card{flex:1 1 100%;padding:14px 18px;}
+    .ann-icon{font-size:18px;width:26px;}
     .ann-text{font-size:.9rem;}
   }
 
@@ -3256,6 +3258,7 @@ ${text}
               <div class="ann-icon-opt" data-icon="✨">✨</div>
               <div class="ann-icon-opt" data-icon="📦">📦</div>
               <div class="ann-icon-opt" data-icon="🌿">🌿</div>
+              <div class="ann-icon-opt" data-icon="" title="بدون أيقونة" style="font-size:11px;color:rgba(255,255,255,.4);">—</div>
             </div>
           </div>
           <button class="ann-btn-add" onclick="annAddAnnouncement()"><span>+</span> نشر الإعلان</button>
@@ -3347,6 +3350,7 @@ ${text}
           <div class="ann-icon-opt" data-icon="✨">✨</div>
           <div class="ann-icon-opt" data-icon="📦">📦</div>
           <div class="ann-icon-opt" data-icon="🌿">🌿</div>
+          <div class="ann-icon-opt" data-icon="" title="بدون أيقونة" style="font-size:11px;color:rgba(255,255,255,.4);">—</div>
         </div>
       </div>
       <div class="ann-modal-actions">
@@ -3891,7 +3895,7 @@ ${itemLines}
       grid.innerHTML = snap.docs.map((d, i) => {
         const a = d.data();
         return `<div class="ann-card ann-${a.color||'gold'}" style="animation-delay:${i*0.09}s" id="ann-card-${d.id}">
-          <span class="ann-icon">${a.icon||'📢'}</span>
+          ${a.icon ? `<span class="ann-icon">${a.icon}</span>` : ''}
           <span class="ann-text">${annEsc(a.text)}</span>
           <button class="ann-edit-btn" onclick="annOpenEdit('${d.id}')">✏️ تعديل</button>
           <button class="ann-del-btn"  onclick="annDelete('${d.id}')">✕ حذف</button>
