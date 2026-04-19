@@ -1875,6 +1875,237 @@
   .shop-toast{position:fixed;bottom:28px;left:28px;z-index:999;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0f2818;padding:14px 26px;border-radius:14px;font-size:.9rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.3);transform:translateY(120px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);}
   .shop-toast.show{transform:translateY(0);opacity:1;}
 
+  /* ── ANNOUNCEMENTS ── */
+  .ann-strip{position:relative;z-index:1;padding:18px 40px 0;max-width:1320px;margin:0 auto;}
+  .ann-strip:empty{display:none;}
+  .ann-grid{display:flex;flex-wrap:wrap;gap:14px;}
+
+  .ann-card{
+    position:relative;
+    flex:1 1 260px;
+    min-width:220px;
+    border-radius:16px;
+    padding:18px 22px 18px 54px;
+    display:flex;align-items:center;gap:14px;
+    border:1px solid rgba(255,255,255,0.12);
+    overflow:hidden;
+    animation:annCardIn .45s ease forwards;
+    cursor:default;
+    transition:transform .25s, box-shadow .25s;
+  }
+  .ann-card:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(0,0,0,0.35);}
+
+  @keyframes annCardIn{
+    from{opacity:0;transform:translateY(14px) scale(.97);}
+    to  {opacity:1;transform:translateY(0) scale(1);}
+  }
+
+  /* Shimmer effect */
+  .ann-card::before{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.08) 50%,transparent 65%);
+    background-size:200% 100%;
+    animation:annShimmer 3.5s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes annShimmer{
+    0%  {background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+
+  /* Left glow bar */
+  .ann-card::after{
+    content:'';
+    position:absolute;
+    right:0;top:0;bottom:0;
+    width:4px;
+    border-radius:0 16px 16px 0;
+    opacity:0.7;
+  }
+
+  .ann-icon{
+    position:absolute;
+    right:16px;top:50%;transform:translateY(-50%);
+    font-size:22px;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+  }
+  .ann-text{
+    font-family:'Tajawal',sans-serif;
+    font-size:1rem;font-weight:700;
+    line-height:1.45;
+    color:#fff;
+    text-shadow:0 1px 4px rgba(0,0,0,0.25);
+    flex:1;
+  }
+  .ann-del-btn{
+    display:none;
+    background:rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.15);
+    color:rgba(255,255,255,0.7);
+    border-radius:8px;
+    padding:5px 9px;
+    font-size:.8rem;
+    cursor:pointer;
+    transition:all .18s;
+    flex-shrink:0;
+    line-height:1;
+  }
+  .ann-del-btn:hover{background:rgba(220,50,50,0.35);border-color:rgba(220,50,50,0.5);color:#ffa5a5;}
+  .ann-edit-btn{
+    display:none;
+    background:rgba(201,149,42,0.15);
+    border:1px solid rgba(201,149,42,0.3);
+    color:var(--gold-light);
+    border-radius:8px;
+    padding:5px 9px;
+    font-size:.8rem;
+    cursor:pointer;
+    transition:all .18s;
+    flex-shrink:0;
+    line-height:1;
+  }
+  .ann-edit-btn:hover{background:rgba(201,149,42,0.28);}
+
+  .shop-admin-mode .ann-del-btn,
+  .shop-admin-mode .ann-edit-btn{display:inline-flex;align-items:center;gap:4px;}
+
+  /* Renk temaları */
+  .ann-gold{
+    background:linear-gradient(135deg,rgba(120,80,0,0.55),rgba(80,50,0,0.45));
+    border-color:rgba(201,149,42,0.4);
+  }
+  .ann-gold::after{background:linear-gradient(to bottom,var(--gold-light),var(--gold));}
+
+  .ann-green{
+    background:linear-gradient(135deg,rgba(20,80,45,0.65),rgba(10,50,28,0.55));
+    border-color:rgba(61,209,117,0.35);
+  }
+  .ann-green::after{background:linear-gradient(to bottom,#3dd175,#29a84f);}
+
+  .ann-red{
+    background:linear-gradient(135deg,rgba(120,20,20,0.6),rgba(80,10,10,0.5));
+    border-color:rgba(255,100,100,0.35);
+  }
+  .ann-red::after{background:linear-gradient(to bottom,#ff6b6b,#c0392b);}
+
+  .ann-blue{
+    background:linear-gradient(135deg,rgba(20,50,120,0.6),rgba(10,30,80,0.5));
+    border-color:rgba(100,150,255,0.35);
+  }
+  .ann-blue::after{background:linear-gradient(to bottom,#74b0ff,#3a7bd5);}
+
+  .ann-purple{
+    background:linear-gradient(135deg,rgba(70,20,110,0.6),rgba(45,10,70,0.5));
+    border-color:rgba(180,120,255,0.35);
+  }
+  .ann-purple::after{background:linear-gradient(to bottom,#c084fc,#7e22ce);}
+
+  /* Admin add form */
+  .ann-add-form-wrap{
+    border:1px dashed rgba(201,149,42,0.25);
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:28px;
+    background:rgba(201,149,42,0.04);
+  }
+  .ann-add-form-title{
+    font-family:'Tajawal',sans-serif;
+    font-size:1.1rem;font-weight:800;
+    color:var(--gold-light);
+    margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .ann-form-row{display:grid;grid-template-columns:1fr 180px auto;gap:14px;align-items:end;}
+  .ann-form-group{display:flex;flex-direction:column;gap:6px;}
+  .ann-form-group label{font-size:.76rem;color:rgba(255,255,255,.45);font-weight:600;}
+  .ann-form-group textarea{
+    padding:11px 14px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(201,149,42,0.2);
+    border-radius:10px;
+    color:rgba(255,255,255,.88);
+    font-family:'Cairo',sans-serif;
+    font-size:.9rem;
+    outline:none;resize:none;
+    transition:border-color .2s;
+    direction:rtl;
+  }
+  .ann-form-group textarea:focus{border-color:var(--gold);}
+  .ann-form-group textarea::placeholder{color:rgba(255,255,255,.2);}
+
+  /* Color picker */
+  .ann-color-picker{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+  .ann-color-opt{
+    width:32px;height:32px;border-radius:8px;
+    cursor:pointer;border:2px solid transparent;
+    transition:all .18s;position:relative;
+  }
+  .ann-color-opt:hover{transform:scale(1.15);}
+  .ann-color-opt.selected{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,0.25);}
+  .ann-color-gold  {background:linear-gradient(135deg,#c9952a,#e8c062);}
+  .ann-color-green {background:linear-gradient(135deg,#2d6a4f,#3dd175);}
+  .ann-color-red   {background:linear-gradient(135deg,#c0392b,#ff6b6b);}
+  .ann-color-blue  {background:linear-gradient(135deg,#3a7bd5,#74b0ff);}
+  .ann-color-purple{background:linear-gradient(135deg,#7e22ce,#c084fc);}
+
+  .ann-icon-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+  .ann-icon-opt{
+    width:36px;height:36px;border-radius:8px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,0.05);
+    cursor:pointer;font-size:18px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .18s;
+  }
+  .ann-icon-opt:hover{background:rgba(201,149,42,0.15);border-color:rgba(201,149,42,0.35);}
+  .ann-icon-opt.selected{background:rgba(201,149,42,0.22);border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,149,42,0.2);}
+
+  .ann-btn-add{
+    padding:11px 20px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    border:none;border-radius:10px;
+    color:#0f2818;
+    font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:800;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+    display:flex;align-items:center;gap:6px;
+    height:fit-content;
+  }
+  .ann-btn-add:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(201,149,42,0.4);}
+
+  /* Announcement Edit Modal */
+  .ann-modal-backdrop{
+    position:fixed;inset:0;z-index:400;
+    background:rgba(2,12,6,0.88);
+    backdrop-filter:blur(10px);
+    display:none;align-items:center;justify-content:center;
+  }
+  .ann-modal-backdrop.open{display:flex;}
+  .ann-modal{
+    background:linear-gradient(150deg,#1a4a2e,#0f2818);
+    border:1px solid rgba(201,149,42,0.2);
+    border-radius:22px;padding:38px;
+    width:480px;max-width:94vw;
+    box-shadow:0 24px 70px rgba(0,0,0,0.5);
+    animation:modalIn .25s ease;
+    position:relative;
+  }
+  .ann-modal h2{font-family:'Tajawal',sans-serif;font-size:1.3rem;font-weight:800;color:var(--gold-light);margin-bottom:20px;}
+  .ann-modal-close{position:absolute;top:18px;left:20px;background:none;border:none;color:rgba(255,255,255,.5);font-size:1.5rem;cursor:pointer;line-height:1;}
+  .ann-modal-actions{display:flex;gap:10px;margin-top:16px;}
+
+  @media(max-width:900px){
+    .ann-form-row{grid-template-columns:1fr;}
+    .ann-strip{padding:18px 14px 0;}
+  }
+  @media(max-width:600px){
+    .ann-card{flex:1 1 100%;padding:14px 18px 14px 46px;}
+    .ann-icon{right:12px;font-size:18px;}
+    .ann-text{font-size:.9rem;}
+  }
+
   /* Shop Footer */
   .shop-footer{text-align:center;padding:32px 20px;color:rgba(255,255,255,.3);font-size:.82rem;border-top:1px solid rgba(201,149,42,0.1);margin-top:40px;}
 
@@ -2818,11 +3049,6 @@ ${text}
       }).join('');
       // Admin modu aktifse sınıfı uygula
       if (storeAdminMode) grid.classList.add('stores-admin-mode');
-      // Dinamik eklenen kartları observer'a kaydet (fade-in animasyonu için)
-      grid.querySelectorAll('.fade-in').forEach((el, i) => {
-        el.style.transitionDelay = `${i * 0.07}s`;
-        observer.observe(el);
-      });
     }, (err) => {
       console.error('Stores onSnapshot error:', err);
       document.getElementById('storesGrid').innerHTML =
@@ -2953,6 +3179,11 @@ ${text}
   <!-- Shop Hero (features removed) -->
   <div class="shop-hero" style="display:none;"></div>
 
+  <!-- Announcements Strip -->
+  <div class="ann-strip" id="annStrip">
+    <div class="ann-grid" id="annGrid"></div>
+  </div>
+
   <!-- Shop Products -->
   <div class="shop-products-section">
     <div class="shop-section-head">
@@ -2995,6 +3226,40 @@ ${text}
           <button class="shop-btn-tg-save" onclick="shopSaveTgSettings()">💾 حفظ &amp; اختبار</button>
         </div>
         <div class="shop-tg-status" id="shopTgStatus"></div>
+      </div>
+      <!-- Announcement Add Form -->
+      <div class="ann-add-form-wrap">
+        <div class="ann-add-form-title">📢 إضافة إعلان / عرض ترويجي</div>
+        <div class="ann-form-row">
+          <div class="ann-form-group" style="grid-column:1/-1">
+            <label>نص الإعلان</label>
+            <textarea id="annText" rows="2" placeholder="مثال: الشحن مجاني عند طلب 5 قطع فأكثر! 🎉"></textarea>
+          </div>
+          <div class="ann-form-group">
+            <label>لون البطاقة</label>
+            <div class="ann-color-picker">
+              <div class="ann-color-opt ann-color-gold selected" data-color="gold" title="ذهبي"></div>
+              <div class="ann-color-opt ann-color-green" data-color="green" title="أخضر"></div>
+              <div class="ann-color-opt ann-color-red" data-color="red" title="أحمر"></div>
+              <div class="ann-color-opt ann-color-blue" data-color="blue" title="أزرق"></div>
+              <div class="ann-color-opt ann-color-purple" data-color="purple" title="بنفسجي"></div>
+            </div>
+          </div>
+          <div class="ann-form-group">
+            <label>أيقونة</label>
+            <div class="ann-icon-picker">
+              <div class="ann-icon-opt selected" data-icon="🚚">🚚</div>
+              <div class="ann-icon-opt" data-icon="🎁">🎁</div>
+              <div class="ann-icon-opt" data-icon="⚡">⚡</div>
+              <div class="ann-icon-opt" data-icon="🔥">🔥</div>
+              <div class="ann-icon-opt" data-icon="💰">💰</div>
+              <div class="ann-icon-opt" data-icon="✨">✨</div>
+              <div class="ann-icon-opt" data-icon="📦">📦</div>
+              <div class="ann-icon-opt" data-icon="🌿">🌿</div>
+            </div>
+          </div>
+          <button class="ann-btn-add" onclick="annAddAnnouncement()"><span>+</span> نشر الإعلان</button>
+        </div>
       </div>
       <div class="shop-add-form-title">➕ إضافة منتج جديد</div>
       <div class="shop-add-form">
@@ -3052,6 +3317,45 @@ ${text}
     </div>
   </div>
 
+  <!-- Announcement Edit Modal -->
+  <div class="ann-modal-backdrop" id="annEditModal">
+    <div class="ann-modal">
+      <button class="ann-modal-close" onclick="annCloseEditModal()">×</button>
+      <h2>✏️ تعديل الإعلان</h2>
+      <div class="ann-form-group" style="margin-bottom:14px">
+        <label style="font-size:.76rem;color:rgba(255,255,255,.45);font-weight:600;display:block;margin-bottom:6px">نص الإعلان</label>
+        <textarea id="annEditText" rows="3" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,149,42,0.2);border-radius:10px;color:rgba(255,255,255,.88);font-family:Cairo,sans-serif;font-size:.9rem;outline:none;resize:none;direction:rtl;transition:border-color .2s" placeholder="نص الإعلان"></textarea>
+      </div>
+      <div class="ann-form-group" style="margin-bottom:14px">
+        <label style="font-size:.76rem;color:rgba(255,255,255,.45);font-weight:600;display:block;margin-bottom:8px">لون البطاقة</label>
+        <div class="ann-color-picker" id="annEditColorPicker">
+          <div class="ann-color-opt ann-color-gold"   data-color="gold"   title="ذهبي"></div>
+          <div class="ann-color-opt ann-color-green"  data-color="green"  title="أخضر"></div>
+          <div class="ann-color-opt ann-color-red"    data-color="red"    title="أحمر"></div>
+          <div class="ann-color-opt ann-color-blue"   data-color="blue"   title="أزرق"></div>
+          <div class="ann-color-opt ann-color-purple" data-color="purple" title="بنفسجي"></div>
+        </div>
+      </div>
+      <div class="ann-form-group" style="margin-bottom:14px">
+        <label style="font-size:.76rem;color:rgba(255,255,255,.45);font-weight:600;display:block;margin-bottom:8px">أيقونة</label>
+        <div class="ann-icon-picker" id="annEditIconPicker">
+          <div class="ann-icon-opt" data-icon="🚚">🚚</div>
+          <div class="ann-icon-opt" data-icon="🎁">🎁</div>
+          <div class="ann-icon-opt" data-icon="⚡">⚡</div>
+          <div class="ann-icon-opt" data-icon="🔥">🔥</div>
+          <div class="ann-icon-opt" data-icon="💰">💰</div>
+          <div class="ann-icon-opt" data-icon="✨">✨</div>
+          <div class="ann-icon-opt" data-icon="📦">📦</div>
+          <div class="ann-icon-opt" data-icon="🌿">🌿</div>
+        </div>
+      </div>
+      <div class="ann-modal-actions">
+        <button class="shop-btn-cancel" onclick="annCloseEditModal()">إلغاء</button>
+        <button class="shop-btn-save" onclick="annSaveEdit()">💾 حفظ التغييرات</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Shop Edit Modal -->
   <div class="shop-modal-backdrop" id="shopEditModal">
     <div class="shop-modal">
@@ -3092,7 +3396,7 @@ ${text}
   import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import {
     getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
-    updateDoc, query, orderBy, onSnapshot
+    updateDoc, query, orderBy, onSnapshot, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   // Mevcut Firebase uygulamasını yeniden kullan (zaten başlatıldıysa)
@@ -3544,3 +3848,185 @@ ${itemLines}
 </script>
 </body>
 </html>
+<script type="module">
+  import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, deleteDoc, doc,
+    updateDoc, query, orderBy, onSnapshot, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  /* ── Firebase'i mevcut shop instance'ından al ── */
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJ1_f4PIHcMS2qsHRx-0PCaxRkebDI9Eo",
+    authDomain: "yorum-8b483.firebaseapp.com",
+    projectId: "yorum-8b483",
+    storageBucket: "yorum-8b483.firebasestorage.app",
+    messagingSenderId: "331392423628",
+    appId: "1:331392423628:web:9a4b54b64217b06c91d469"
+  };
+  let annApp;
+  const existingApps = getApps();
+  const namedApp = existingApps.find(a => a.name === 'shop');
+  if (namedApp) { annApp = namedApp; }
+  else {
+    const defaultApp = existingApps.find(a => a.name === '[DEFAULT]');
+    annApp = defaultApp || initializeApp(firebaseConfig, 'ann');
+  }
+  const annDb = getFirestore(annApp);
+
+  /* ── State ── */
+  let annEditingId   = null;
+  let annSelectedColor = 'gold';
+  let annSelectedIcon  = '🚚';
+  let annEditColor   = 'gold';
+  let annEditIcon    = '🚚';
+
+  /* ── Firestore realtime listener ── */
+  function annListen() {
+    const q = query(collection(annDb, 'announcements'), orderBy('createdAt', 'asc'));
+    onSnapshot(q, snap => {
+      const grid = document.getElementById('annGrid');
+      if (!grid) return;
+      if (!snap.docs.length) { grid.innerHTML = ''; return; }
+      grid.innerHTML = snap.docs.map((d, i) => {
+        const a = d.data();
+        return `<div class="ann-card ann-${a.color||'gold'}" style="animation-delay:${i*0.09}s" id="ann-card-${d.id}">
+          <span class="ann-icon">${a.icon||'📢'}</span>
+          <span class="ann-text">${annEsc(a.text)}</span>
+          <button class="ann-edit-btn" onclick="annOpenEdit('${d.id}')">✏️ تعديل</button>
+          <button class="ann-del-btn"  onclick="annDelete('${d.id}')">✕ حذف</button>
+        </div>`;
+      }).join('');
+    });
+  }
+
+  /* ── Add ── */
+  window.annAddAnnouncement = async function() {
+    const text = (document.getElementById('annText')||{}).value?.trim();
+    if (!text) { shopShowToast && shopShowToast('⚠️ يرجى كتابة نص الإعلان'); return; }
+    const btn = document.querySelector('.ann-btn-add');
+    if (btn) { btn.disabled = true; btn.innerHTML = '...جارٍ النشر'; }
+    try {
+      await addDoc(collection(annDb, 'announcements'), {
+        text, color: annSelectedColor, icon: annSelectedIcon,
+        createdAt: serverTimestamp()
+      });
+      document.getElementById('annText').value = '';
+      if (window.shopShowToast) shopShowToast('✓ تم نشر الإعلان');
+    } catch(e) {
+      if (window.shopShowToast) shopShowToast('⚠️ فشل النشر');
+      console.error(e);
+    }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span>+</span> نشر الإعلان'; }
+  };
+
+  /* ── Delete ── */
+  window.annDelete = async function(docId) {
+    if (!confirm('هل تريد حذف هذا الإعلان؟')) return;
+    try {
+      await deleteDoc(doc(annDb, 'announcements', docId));
+      if (window.shopShowToast) shopShowToast('تم حذف الإعلان');
+    } catch(e) {
+      if (window.shopShowToast) shopShowToast('⚠️ فشل الحذف');
+    }
+  };
+
+  /* ── Open edit modal ── */
+  window.annOpenEdit = function(docId) {
+    const card = document.getElementById('ann-card-' + docId);
+    if (!card) return;
+    annEditingId = docId;
+    const rawText = card.querySelector('.ann-text').innerHTML
+      .replace(/<br>/g,'\n').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    const colorCls = [...card.classList].find(c => c.startsWith('ann-') && c !== 'ann-card');
+    annEditColor = colorCls ? colorCls.replace('ann-','') : 'gold';
+    annEditIcon  = card.querySelector('.ann-icon').textContent.trim();
+
+    document.getElementById('annEditText').value = rawText;
+
+    document.getElementById('annEditColorPicker')
+      .querySelectorAll('.ann-color-opt').forEach(b =>
+        b.classList.toggle('selected', b.dataset.color === annEditColor));
+    document.getElementById('annEditIconPicker')
+      .querySelectorAll('.ann-icon-opt').forEach(b =>
+        b.classList.toggle('selected', b.dataset.icon === annEditIcon));
+
+    document.getElementById('annEditModal').classList.add('open');
+    setupEditPickers();
+  };
+
+  window.annCloseEditModal = function() {
+    document.getElementById('annEditModal').classList.remove('open');
+    annEditingId = null;
+  };
+
+  /* ── Save edit ── */
+  window.annSaveEdit = async function() {
+    const text = document.getElementById('annEditText').value.trim();
+    if (!text) { if(window.shopShowToast) shopShowToast('⚠️ النص فارغ'); return; }
+    const btn = document.querySelector('#annEditModal .shop-btn-save');
+    if (btn) { btn.disabled = true; btn.textContent = '...جارٍ الحفظ'; }
+    try {
+      await updateDoc(doc(annDb, 'announcements', annEditingId),
+        { text, color: annEditColor, icon: annEditIcon });
+      annCloseEditModal();
+      if (window.shopShowToast) shopShowToast('✓ تم حفظ الإعلان');
+    } catch(e) {
+      if (window.shopShowToast) shopShowToast('⚠️ فشل الحفظ');
+    }
+    if (btn) { btn.disabled = false; btn.textContent = '💾 حفظ التغييرات'; }
+  };
+
+  /* ── Backdrop click ── */
+  document.getElementById('annEditModal').addEventListener('click', e => {
+    if (e.target.id === 'annEditModal') annCloseEditModal();
+  });
+
+  /* ── Picker setup (add form) ── */
+  function setupAddPickers() {
+    document.querySelectorAll('#shopAdminPanel .ann-color-picker .ann-color-opt').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('#shopAdminPanel .ann-color-picker .ann-color-opt')
+          .forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        annSelectedColor = btn.dataset.color;
+      };
+    });
+    document.querySelectorAll('#shopAdminPanel .ann-icon-picker .ann-icon-opt').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('#shopAdminPanel .ann-icon-picker .ann-icon-opt')
+          .forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        annSelectedIcon = btn.dataset.icon;
+      };
+    });
+  }
+
+  /* ── Picker setup (edit modal) ── */
+  function setupEditPickers() {
+    document.getElementById('annEditColorPicker').querySelectorAll('.ann-color-opt').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('annEditColorPicker')
+          .querySelectorAll('.ann-color-opt').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        annEditColor = btn.dataset.color;
+      };
+    });
+    document.getElementById('annEditIconPicker').querySelectorAll('.ann-icon-opt').forEach(btn => {
+      btn.onclick = () => {
+        document.getElementById('annEditIconPicker')
+          .querySelectorAll('.ann-icon-opt').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        annEditIcon = btn.dataset.icon;
+      };
+    });
+  }
+
+  function annEsc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  }
+
+  /* ── Başlat ── */
+  annListen();
+  setupAddPickers();
+</script>
