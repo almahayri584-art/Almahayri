@@ -3075,7 +3075,7 @@ ${text}
   onAuthStateChanged(auth, (user) => { updateStoreAdminUI(!!user); });
 
   // Resim önizleme
- window.storePreviewImage = function(input) {
+window.storePreviewImage = function(input) {
     if (!input.files || !input.files[0]) return;
     const reader = new FileReader();
     reader.onload = e => {
@@ -3094,12 +3094,8 @@ ${text}
       };
       img.src = e.target.result;
     };
-      const wrap = document.getElementById('storeAdminImgWrap');
-      wrap.innerHTML = `<img src="${storePendingImage}" style="max-height:120px; border-radius:8px; object-fit:cover;">`;
-    };
     reader.readAsDataURL(input.files[0]);
   }
-
   // Formu temizle
   window.storeAdminClear = function() {
     ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap'].forEach(id => {
