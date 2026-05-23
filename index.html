@@ -3049,7 +3049,7 @@ ${text}
             <span class="store-number">المتجر ${n}</span>
             <div class="store-name">${s.name}</div>
             ${s.desc ? `<p class="store-desc">${s.desc}</p>` : ''}
-            ${s.mapUrl ? `<a href="${s.mapUrl}" target="_blank" rel="noopener" class="store-map-btn">📍 عرض على الخريطة</a>` : ''}
+            ${s.mapUrl ? `<a href="${s.mapUrl}" target="_blank" rel="noopener" class="store-map-btn">📍 عرض على الخريطة</a>` : '<p class="store-desc" style="color:#aaa;font-size:12px;">لا يوجد رابط خريطة</p>'}
           </div>`;
       }).join('');
       // Admin modu aktifse sınıfı uygula
