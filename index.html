@@ -3075,11 +3075,25 @@ ${text}
   onAuthStateChanged(auth, (user) => { updateStoreAdminUI(!!user); });
 
   // Resim önizleme
-  window.storePreviewImage = function(input) {
+ window.storePreviewImage = function(input) {
     if (!input.files || !input.files[0]) return;
     const reader = new FileReader();
     reader.onload = e => {
-      storePendingImage = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const max = 600;
+        let w = img.width, h = img.height;
+        if (w > max) { h = h * max / w; w = max; }
+        if (h > max) { w = w * max / h; h = max; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        storePendingImage = canvas.toDataURL('image/jpeg', 0.7);
+        const wrap = document.getElementById('storeAdminImgWrap');
+        wrap.innerHTML = `<img src="${storePendingImage}" style="max-height:120px; border-radius:8px; object-fit:cover;">`;
+      };
+      img.src = e.target.result;
+    };
       const wrap = document.getElementById('storeAdminImgWrap');
       wrap.innerHTML = `<img src="${storePendingImage}" style="max-height:120px; border-radius:8px; object-fit:cover;">`;
     };
