@@ -3036,9 +3036,7 @@ ${text}
       grid.innerHTML = sorted.map(docSnap => {
         const s = docSnap.data();
         const icon = s.icon || '🏪';
-        const imgHtml = s.image
-          ? `<div class="store-img-wrap"><img src="${s.image}" alt="${s.name}"></div>`
-          : '';
+        const imgHtml = '';
         const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
         const n = String(num++).padStart(2,'0');
         return `
