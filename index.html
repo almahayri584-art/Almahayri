@@ -2591,6 +2591,39 @@
         <input type="url" id="storeAdminMap" placeholder="https://maps.app.goo.gl/..." dir="ltr"
           style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:12px; outline:none;">
       </div>
+      <!-- Buton yazısı -->
+      <div>
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">نص زر الخريطة</label>
+        <input type="text" id="storeAdminBtnText" placeholder="مثال: عرض على الخريطة 📍"
+          style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:13px; outline:none;">
+      </div>
+      <!-- Renk paleti -->
+      <div>
+        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">لون بطاقة المتجر</label>
+        <div id="storeColorPalette" style="display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(201,149,42,.3); border-radius:10px;">
+          <div onclick="selectStoreColor(this,'#ffffff')"       data-color="#ffffff"       style="width:28px;height:28px;border-radius:50%;background:#ffffff;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#f0fdf4')"       data-color="#f0fdf4"       style="width:28px;height:28px;border-radius:50%;background:#f0fdf4;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#dcfce7')"       data-color="#dcfce7"       style="width:28px;height:28px;border-radius:50%;background:#dcfce7;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#fefce8')"       data-color="#fefce8"       style="width:28px;height:28px;border-radius:50%;background:#fefce8;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#fef9c3')"       data-color="#fef9c3"       style="width:28px;height:28px;border-radius:50%;background:#fef9c3;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#fff7ed')"       data-color="#fff7ed"       style="width:28px;height:28px;border-radius:50%;background:#fff7ed;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#fce7f3')"       data-color="#fce7f3"       style="width:28px;height:28px;border-radius:50%;background:#fce7f3;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#eff6ff')"       data-color="#eff6ff"       style="width:28px;height:28px;border-radius:50%;background:#eff6ff;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#f5f3ff')"       data-color="#f5f3ff"       style="width:28px;height:28px;border-radius:50%;background:#f5f3ff;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#fdf2f8')"       data-color="#fdf2f8"       style="width:28px;height:28px;border-radius:50%;background:#fdf2f8;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#e0f2fe')"       data-color="#e0f2fe"       style="width:28px;height:28px;border-radius:50%;background:#e0f2fe;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#f1f5f9')"       data-color="#f1f5f9"       style="width:28px;height:28px;border-radius:50%;background:#f1f5f9;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#1a4a2e')"       data-color="#1a4a2e"       style="width:28px;height:28px;border-radius:50%;background:#1a4a2e;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#14532d')"       data-color="#14532d"       style="width:28px;height:28px;border-radius:50%;background:#14532d;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#713f12')"       data-color="#713f12"       style="width:28px;height:28px;border-radius:50%;background:#713f12;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <div onclick="selectStoreColor(this,'#1e3a5f')"       data-color="#1e3a5f"       style="width:28px;height:28px;border-radius:50%;background:#1e3a5f;border:2px solid #ccc;cursor:pointer;transition:transform .15s;"></div>
+          <!-- Özel renk seçici -->
+          <label title="لون مخصص" style="width:28px;height:28px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);border:2px solid #ccc;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+            <input type="color" id="storeCustomColor" onchange="selectStoreColorHex(this.value)" style="opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;">
+          </label>
+        </div>
+        <input type="hidden" id="storeAdminColor" value="#ffffff">
+      </div>
       <div style="grid-column:1/-1;">
         <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">صورة المتجر (اختياري)</label>
         <div id="storeAdminImgWrap"
@@ -3119,12 +3152,17 @@ ${text}
         const s = docSnap.data();
         const icon = s.icon || '🏪';
         const imgHtml = '';
+        const cardColor = s.color || '#ffffff';
+        const isDark = ['#1a4a2e','#14532d','#713f12','#1e3a5f'].includes(cardColor);
+        const textOverride = isDark ? 'color:#fff;' : '';
+        const mapBtnText = s.btnText || '📍 عرض على الخريطة';
         const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
-        const dragHandle = `<span class="store-drag-handle" title="اسحب لإعادة الترتيب">⠿</span>`;
+        const editBtn = `<button class="store-admin-del" style="left:auto;right:auto;top:10px;right:70px;background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3);" onclick="storeAdminEdit('${docSnap.id}')">✏️ تعديل</button>`;
         const n = String(num++).padStart(2,'0');
         return `
           <div class="store-card" style="position:relative;" data-id="${docSnap.id}">
-            ${delBtn}
+           ${delBtn}
+            ${editBtn}
             ${dragHandle}
             ${imgHtml}
             <div class="store-icon">${icon}</div>
@@ -3236,33 +3274,68 @@ window.storePreviewImage = function(input) {
     reader.readAsDataURL(input.files[0]);
   }
   // Formu temizle
-  window.storeAdminClear = function() {
-    ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap'].forEach(id => {
+ window.storeAdminClear = function() {
+    ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap','storeAdminBtnText'].forEach(id => {
       const el = document.getElementById(id); if(el) el.value = '';
     });
     storePendingImage = null;
     document.getElementById('storeAdminImgInput').value = '';
     document.getElementById('storeAdminImgWrap').innerHTML = `<span>📷</span><span>اضغط لاختيار صورة</span>`;
     document.getElementById('storeAdminError').style.display = 'none';
+    // Renk sıfırla
+    document.getElementById('storeAdminColor').value = '#ffffff';
+    document.querySelectorAll('#storeColorPalette div[data-color]').forEach(d => {
+      d.style.transform = 'scale(1)';
+      d.style.boxShadow = 'none';
+      d.style.border = '2px solid #ccc';
+    });
+    // Butonu yeni ekleme moduna döndür
+    const saveBtn = document.getElementById('storeAdminSaveBtn');
+    if (saveBtn) {
+      saveBtn.textContent = '✦ إضافة المتجر';
+      saveBtn.onclick = storeAdminSave;
+      delete saveBtn.dataset.editId;
+    }
   }
 
   // Mağaza ekle
+ // Renk seçimi
+  window.selectStoreColor = function(el, color) {
+    document.getElementById('storeAdminColor').value = color;
+    document.querySelectorAll('#storeColorPalette div[data-color]').forEach(d => {
+      d.style.transform = 'scale(1)';
+      d.style.boxShadow = 'none';
+      d.style.border = '2px solid #ccc';
+    });
+    el.style.transform = 'scale(1.3)';
+    el.style.boxShadow = '0 0 0 3px var(--gold-light, #c9952a)';
+    el.style.border = '2px solid var(--gold-light, #c9952a)';
+  }
+  window.selectStoreColorHex = function(hex) {
+    document.getElementById('storeAdminColor').value = hex;
+    document.querySelectorAll('#storeColorPalette div[data-color]').forEach(d => {
+      d.style.transform = 'scale(1)';
+      d.style.boxShadow = 'none';
+      d.style.border = '2px solid #ccc';
+    });
+  }
+
   window.storeAdminSave = async function() {
-    const name   = document.getElementById('storeAdminName').value.trim();
-    const icon   = document.getElementById('storeAdminIcon').value.trim() || '🏪';
-    const desc   = document.getElementById('storeAdminDesc').value.trim();
-    const mapUrl = document.getElementById('storeAdminMap').value.trim();
-    const errEl  = document.getElementById('storeAdminError');
-    const btn    = document.getElementById('storeAdminSaveBtn');
-
+    const name    = document.getElementById('storeAdminName').value.trim();
+    const icon    = document.getElementById('storeAdminIcon').value.trim() || '🏪';
+    const desc    = document.getElementById('storeAdminDesc').value.trim();
+    const mapUrl  = document.getElementById('storeAdminMap').value.trim();
+    const btnText = document.getElementById('storeAdminBtnText').value.trim() || '📍 عرض على الخريطة';
+    const color   = document.getElementById('storeAdminColor').value || '#ffffff';
+    const errEl   = document.getElementById('storeAdminError');
+    const btn     = document.getElementById('storeAdminSaveBtn');
     errEl.style.display = 'none';
-    if (!name) { errEl.textContent = '⚠️ يرجى إدخال اسم المتجر'; errEl.style.display = 'block'; return; }
+    if (!name)   { errEl.textContent = '⚠️ يرجى إدخال اسم المتجر';       errEl.style.display = 'block'; return; }
     if (!mapUrl) { errEl.textContent = '⚠️ يرجى إدخال رابط Google Maps'; errEl.style.display = 'block'; return; }
-
     btn.disabled = true; btn.textContent = '...جارٍ الحفظ';
     try {
       await addDoc(storesCol, {
-        name, icon, desc, mapUrl,
+        name, icon, desc, mapUrl, btnText, color,
         image: storePendingImage || null,
         createdAt: Date.now()
       });
@@ -3274,7 +3347,6 @@ window.storePreviewImage = function(input) {
     }
     btn.disabled = false; btn.textContent = '✦ إضافة المتجر';
   }
-
   // Mağaza sil
   window.storeAdminDelete = async function(docId) {
     if (!confirm('هل تريد حذف هذا المتجر؟')) return;
@@ -3287,6 +3359,55 @@ window.storePreviewImage = function(input) {
     el.style.transitionDelay = `${i * 0.06}s`;
     observer.observe(el);
   });
+  // Mağaza düzenle
+  window.storeAdminEdit = async function(docId) {
+    const snap = await getDocs(storesCol);
+    const docSnap = snap.docs.find(d => d.id === docId);
+    if (!docSnap) return;
+    const s = docSnap.data();
+    // Paneli doldur
+    document.getElementById('storeAdminName').value    = s.name    || '';
+    document.getElementById('storeAdminIcon').value    = s.icon    || '🏪';
+    document.getElementById('storeAdminDesc').value    = s.desc    || '';
+    document.getElementById('storeAdminMap').value     = s.mapUrl  || '';
+    document.getElementById('storeAdminBtnText').value = s.btnText || '';
+    document.getElementById('storeAdminColor').value   = s.color   || '#ffffff';
+    // Paletteki rengi seç
+    const match = document.querySelector(`#storeColorPalette div[data-color="${s.color}"]`);
+    if (match) selectStoreColor(match, s.color);
+    // Buton metnini güncelle - kaydet değil, güncelle moduna geç
+    const saveBtn = document.getElementById('storeAdminSaveBtn');
+    saveBtn.textContent = '✦ تحديث المتجر';
+    saveBtn.dataset.editId = docId;
+    saveBtn.onclick = async function() {
+      const name    = document.getElementById('storeAdminName').value.trim();
+      const icon    = document.getElementById('storeAdminIcon').value.trim() || '🏪';
+      const desc    = document.getElementById('storeAdminDesc').value.trim();
+      const mapUrl  = document.getElementById('storeAdminMap').value.trim();
+      const btnText = document.getElementById('storeAdminBtnText').value.trim() || '📍 عرض على الخريطة';
+      const color   = document.getElementById('storeAdminColor').value || '#ffffff';
+      const errEl   = document.getElementById('storeAdminError');
+      errEl.style.display = 'none';
+      if (!name)   { errEl.textContent = '⚠️ يرجى إدخال اسم المتجر'; errEl.style.display = 'block'; return; }
+      if (!mapUrl) { errEl.textContent = '⚠️ يرجى إدخال رابط Google Maps'; errEl.style.display = 'block'; return; }
+      saveBtn.disabled = true; saveBtn.textContent = '...جارٍ الحفظ';
+      try {
+        await updateDoc(doc(db, 'mağazalar', docId), { name, icon, desc, mapUrl, btnText, color });
+        storeAdminClear();
+        // Butonu eski haline döndür
+        saveBtn.textContent = '✦ إضافة المتجر';
+        saveBtn.onclick = storeAdminSave;
+        delete saveBtn.dataset.editId;
+      } catch(e) {
+        errEl.textContent = '⚠️ حدث خطأ: ' + e.message;
+        errEl.style.display = 'block';
+      }
+      saveBtn.disabled = false;
+    };
+    // Paneli görünür yap ve kaydır
+    document.getElementById('store-admin-panel').style.display = 'block';
+    document.getElementById('store-admin-panel').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SHOP SECTION TOGGLE
