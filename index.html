@@ -2163,6 +2163,60 @@
   }
 </style>
 </head>
+  <!-- Floating Buy Button - Mobile Only -->
+<div id="floatingStoreBtn" style="
+  display: none;
+  position: fixed;
+  right: 16px;
+  bottom: 80px;
+  z-index: 9999;
+  flex-direction: column;
+  align-items: flex-end;
+">
+  <!-- Kapat butonu -->
+  <button onclick="document.getElementById('floatingStoreBtn').style.display='none'" style="
+    background: #1a5c35;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    margin-right: 2px;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  ">✕</button>
+
+  <!-- Ana balon -->
+  <a href="#stores" style="
+    background: #1a5c35;
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    white-space: nowrap;
+    direction: rtl;
+  ">🛒 من أين تشتري؟</a>
+</div>
+
+<script>
+  // Sadece mobilde göster
+  function checkMobile() {
+    var btn = document.getElementById('floatingStoreBtn');
+    if (window.innerWidth <= 768) {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
+  }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+</script>
 <body>
 
 <!-- NAVBAR -->
