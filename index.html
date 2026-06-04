@@ -849,6 +849,30 @@
   .store-admin-del:hover { background: rgba(239,68,68,.32); }
 
   .stores-admin-mode .store-admin-del { display: block; }
+  .stores-admin-mode .store-admin-del { display: block; }
+
+  /* Sürükle-bırak */
+  .store-drag-handle {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 18px;
+    cursor: grab;
+    color: var(--gold);
+    opacity: 0;
+    transition: opacity .2s;
+    display: none;
+    user-select: none;
+  }
+  .stores-admin-mode .store-drag-handle { display: block; }
+  .store-card:hover .store-drag-handle { opacity: 1; }
+  .store-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.97);
+  }
+  .store-card.drag-over {
+    border: 2px dashed var(--gold);
+    background: rgba(201,149,42,.07);
+  }
 
   /* ─── REVIEWS ─── */
   .reviews-section {
@@ -3076,7 +3100,7 @@ ${text}
   let storeAdminMode = false;
   let storePendingImage = null; // base64
 
-  // Mağazaları gerçek zamanlı dinle
+ // Mağazaları gerçek zamanlı dinle
   function listenStores() {
     const grid = document.getElementById('storesGrid');
     onSnapshot(storesCol, (snapshot) => {
@@ -3084,18 +3108,24 @@ ${text}
         grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-light); padding:40px; font-size:15px;">لا توجد متاجر مضافة بعد</div>`;
         return;
       }
-      // Client tarafında createdAt'e göre sırala (Firestore index gerekmez)
-      const sorted = snapshot.docs.slice().sort((a, b) => (a.data().createdAt || 0) - (b.data().createdAt || 0));
+      // order alanına göre sırala, yoksa createdAt'e göre
+      const sorted = snapshot.docs.slice().sort((a, b) => {
+        const aOrder = a.data().order !== undefined ? a.data().order : (a.data().createdAt || 0);
+        const bOrder = b.data().order !== undefined ? b.data().order : (b.data().createdAt || 0);
+        return aOrder - bOrder;
+      });
       let num = 1;
       grid.innerHTML = sorted.map(docSnap => {
         const s = docSnap.data();
         const icon = s.icon || '🏪';
         const imgHtml = '';
         const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
+        const dragHandle = `<span class="store-drag-handle" title="اسحب لإعادة الترتيب">⠿</span>`;
         const n = String(num++).padStart(2,'0');
         return `
-          <div class="store-card" style="position:relative;">
+          <div class="store-card" style="position:relative;" data-id="${docSnap.id}">
             ${delBtn}
+            ${dragHandle}
             ${imgHtml}
             <div class="store-icon">${icon}</div>
             <span class="store-number">المتجر ${n}</span>
@@ -3106,12 +3136,69 @@ ${text}
       }).join('');
       // Admin modu aktifse sınıfı uygula
       if (storeAdminMode) grid.classList.add('stores-admin-mode');
+      // Sürükle-bırak başlat
+      if (storeAdminMode) initDragSort(sorted.map(d => d.id));
     }, (err) => {
       console.error('Stores onSnapshot error:', err);
       document.getElementById('storesGrid').innerHTML =
         `<div style="grid-column:1/-1; text-align:center; color:#ef4444; padding:40px;">⚠️ خطأ في تحميل المتاجر: ${err.message}</div>`;
     });
   }
+
+  // Sürükle-bırak fonksiyonu
+  function initDragSort(docIds) {
+    const grid = document.getElementById('storesGrid');
+    const cards = grid.querySelectorAll('.store-card');
+    let dragSrc = null;
+
+    cards.forEach(card => {
+      card.setAttribute('draggable', 'true');
+
+      card.addEventListener('dragstart', function(e) {
+        dragSrc = this;
+        setTimeout(() => this.classList.add('dragging'), 0);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', function() {
+        this.classList.remove('dragging');
+        grid.querySelectorAll('.store-card').forEach(c => c.classList.remove('drag-over'));
+      });
+      card.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (this !== dragSrc) this.classList.add('drag-over');
+      });
+      card.addEventListener('dragleave', function() {
+        this.classList.remove('drag-over');
+      });
+      card.addEventListener('drop', async function(e) {
+        e.stopPropagation();
+        this.classList.remove('drag-over');
+        if (dragSrc === this) return;
+
+        // Yeni sırayı hesapla
+        const allCards = [...grid.querySelectorAll('.store-card')];
+        const srcIdx = allCards.indexOf(dragSrc);
+        const dstIdx = allCards.indexOf(this);
+
+        // Dizideki ID'leri yeniden sırala
+        const newOrder = [...docIds];
+        const [moved] = newOrder.splice(srcIdx, 1);
+        newOrder.splice(dstIdx, 0, moved);
+
+        // Firestore'a yeni sırayı kaydet
+        try {
+          const updates = newOrder.map((id, index) =>
+            updateDoc(doc(db, 'mağazalar', id), { order: index })
+          );
+          await Promise.all(updates);
+        } catch(err) {
+          console.error('Sıralama kaydedilemedi:', err);
+        }
+      });
+    });
+  }
+
   listenStores();
 
   // Admin girişi/çıkışında stores panelini güncelle
