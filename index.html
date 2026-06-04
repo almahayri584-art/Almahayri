@@ -3156,12 +3156,13 @@ ${text}
         const isDark = ['#1a4a2e','#14532d','#713f12','#1e3a5f'].includes(cardColor);
         const textOverride = isDark ? 'color:#fff;' : '';
         const mapBtnText = s.btnText || '📍 عرض على الخريطة';
-        const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
-        const editBtn = `<button class="store-admin-del" style="left:auto;right:auto;top:10px;right:70px;background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3);" onclick="storeAdminEdit('${docSnap.id}')">✏️ تعديل</button>`;
+      const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
+        const editBtn = `<button class="store-admin-del" style="position:absolute;left:auto;top:10px;right:70px;background:rgba(59,130,246,.15);color:#3b82f6;border-color:rgba(59,130,246,.3);" onclick="storeAdminEdit('${docSnap.id}')">✏️ تعديل</button>`;
+        const dragHandle = `<span class="store-drag-handle" title="اسحب لإعادة الترتيب">⠿</span>`;
         const n = String(num++).padStart(2,'0');
         return `
-          <div class="store-card" style="position:relative;" data-id="${docSnap.id}">
-           ${delBtn}
+          <div class="store-card" style="position:relative; background:${cardColor}; ${textOverride}" data-id="${docSnap.id}">
+            ${delBtn}
             ${editBtn}
             ${dragHandle}
             ${imgHtml}
@@ -3169,7 +3170,7 @@ ${text}
             <span class="store-number">المتجر ${n}</span>
             <div class="store-name">${s.name}</div>
             ${s.desc ? `<p class="store-desc">${s.desc}</p>` : ''}
-            ${s.mapUrl ? `<a href="${s.mapUrl}" target="_blank" rel="noopener" class="store-map-btn">📍 عرض على الخريطة</a>` : '<p class="store-desc" style="color:#aaa;font-size:12px;">لا يوجد رابط خريطة</p>'}
+            ${s.mapUrl ? `<a href="${s.mapUrl}" target="_blank" rel="noopener" class="store-map-btn">${mapBtnText}</a>` : '<p class="store-desc" style="color:#aaa;font-size:12px;">لا يوجد رابط خريطة</p>'}
           </div>`;
       }).join('');
       // Admin modu aktifse sınıfı uygula
