@@ -828,23 +828,7 @@
   }
 
   .store-card:hover .store-img-wrap img { transform: scale(1.06); }
-.store-admin-edit {
-  position: absolute;
-  top: 10px;
-  right: 80px;
-  background: rgba(59, 130, 246, 0.12);
-  color: #2563eb;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 8px;
-  padding: 5px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  font-family: 'Cairo', sans-serif;
-  display: none;
-  transition: background .2s;
-}
-.store-admin-edit:hover { background: rgba(59,130,246,0.22); }
-.stores-admin-mode .store-admin-edit { display: block; }
+
   .store-admin-del {
     position: absolute;
     top: 10px; left: 10px;
@@ -2607,18 +2591,6 @@
         <input type="url" id="storeAdminMap" placeholder="https://maps.app.goo.gl/..." dir="ltr"
           style="width:100%; background:var(--white); border:1px solid rgba(201,149,42,.3); border-radius:10px; padding:10px 14px; color:var(--text-dark); font-family:'Cairo',sans-serif; font-size:12px; outline:none;">
       </div>
-     <div>
-        <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">لون البطاقة</label>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:6px;">
-          <span onclick="document.getElementById('storeAdminColor').value='#ffffff'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#ffffff;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <span onclick="document.getElementById('storeAdminColor').value='#f0fae8'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#f0fae8;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <span onclick="document.getElementById('storeAdminColor').value='#fff8e7'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#fff8e7;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <span onclick="document.getElementById('storeAdminColor').value='#e8f4fd'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#e8f4fd;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <span onclick="document.getElementById('storeAdminColor').value='#fdecea'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#fdecea;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <span onclick="document.getElementById('storeAdminColor').value='#f3e8ff'; this.parentElement.querySelectorAll('.color-swatch').forEach(s=>s.style.outline='none'); this.style.outline='3px solid #1a5c35';" class="color-swatch" style="width:28px;height:28px;border-radius:50%;background:#f3e8ff;border:1px solid #ccc;cursor:pointer;display:inline-block;"></span>
-          <input type="color" id="storeAdminColor" value="#ffffff" style="width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;padding:0;">
-        </div>
-      </div>
       <div style="grid-column:1/-1;">
         <label style="font-size:11px; color:var(--text-light); display:block; margin-bottom:5px; letter-spacing:1px;">صورة المتجر (اختياري)</label>
         <div id="storeAdminImgWrap"
@@ -3148,14 +3120,11 @@ ${text}
         const icon = s.icon || '🏪';
         const imgHtml = '';
         const delBtn = `<button class="store-admin-del" onclick="storeAdminDelete('${docSnap.id}')">🗑 حذف</button>`;
-        const editBtn = `<button class="store-admin-edit" onclick="storeAdminEdit('${docSnap.id}')">✏️ تعديل</button>`;
         const dragHandle = `<span class="store-drag-handle" title="اسحب لإعادة الترتيب">⠿</span>`;
         const n = String(num++).padStart(2,'0');
-     const cardBg = s.color || '#ffffff';
         return `
-          <div class="store-card" style="position:relative; background:${cardBg};" data-id="${docSnap.id}">
+          <div class="store-card" style="position:relative;" data-id="${docSnap.id}">
             ${delBtn}
-            ${editBtn}
             ${dragHandle}
             ${imgHtml}
             <div class="store-icon">${icon}</div>
@@ -3269,11 +3238,8 @@ window.storePreviewImage = function(input) {
   // Formu temizle
   window.storeAdminClear = function() {
     ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap'].forEach(id => {
-    ['storeAdminName','storeAdminIcon','storeAdminDesc','storeAdminMap'].forEach(id => {
       const el = document.getElementById(id); if(el) el.value = '';
     });
-    const colorEl = document.getElementById('storeAdminColor');     if (colorEl) colorEl.value = '#ffffff';     const colorEl = document.getElementById('storeAdminColor');
-    if (colorEl) colorEl.value = '#ffffff';
     storePendingImage = null;
     document.getElementById('storeAdminImgInput').value = '';
     document.getElementById('storeAdminImgWrap').innerHTML = `<span>📷</span><span>اضغط لاختيار صورة</span>`;
@@ -3281,12 +3247,11 @@ window.storePreviewImage = function(input) {
   }
 
   // Mağaza ekle
- window.storeAdminSave = async function() {
+  window.storeAdminSave = async function() {
     const name   = document.getElementById('storeAdminName').value.trim();
     const icon   = document.getElementById('storeAdminIcon').value.trim() || '🏪';
     const desc   = document.getElementById('storeAdminDesc').value.trim();
     const mapUrl = document.getElementById('storeAdminMap').value.trim();
-    const color  = document.getElementById('storeAdminColor').value || '#ffffff';
     const errEl  = document.getElementById('storeAdminError');
     const btn    = document.getElementById('storeAdminSaveBtn');
 
@@ -3296,9 +3261,8 @@ window.storePreviewImage = function(input) {
 
     btn.disabled = true; btn.textContent = '...جارٍ الحفظ';
     try {
-     await addDoc(storesCol, {
+      await addDoc(storesCol, {
         name, icon, desc, mapUrl,
-        color,
         image: storePendingImage || null,
         createdAt: Date.now()
       });
@@ -3312,57 +3276,11 @@ window.storePreviewImage = function(input) {
   }
 
   // Mağaza sil
- window.storeAdminDelete = async function(docId) {
+  window.storeAdminDelete = async function(docId) {
     if (!confirm('هل تريد حذف هذا المتجر؟')) return;
     try {
       await deleteDoc(doc(db, 'mağazalar', docId));
     } catch(e) { alert('⚠️ فشل الحذف'); console.error(e); }
-  }
-
-  window.storeAdminEdit = async function(docId) {
-    const snap = await getDoc(doc(db, 'mağazalar', docId));
-    if (!snap.exists()) return;
-    const s = snap.data();
-    document.getElementById('storeAdminName').value  = s.name    || '';
-    document.getElementById('storeAdminIcon').value  = s.icon    || '';
-    document.getElementById('storeAdminDesc').value  = s.desc    || '';
-    document.getElementById('storeAdminMap').value   = s.mapUrl  || '';
-    const colorEl = document.getElementById('storeAdminColor');
-    if (colorEl) colorEl.value = s.color || '#ffffff';
-    if (s.image) {
-      storePendingImage = s.image;
-      document.getElementById('storeAdminImgWrap').innerHTML =
-        `<img src="${s.image}" style="max-height:120px; border-radius:8px; object-fit:cover;">`;
-    }
-    // Kaydet butonunu güncelleme moduna al
-    const btn = document.getElementById('storeAdminSaveBtn');
-    btn.textContent = '✦ حفظ التعديلات';
-    btn.onclick = async function() {
-      const name   = document.getElementById('storeAdminName').value.trim();
-      const icon   = document.getElementById('storeAdminIcon').value.trim() || '🏪';
-      const desc   = document.getElementById('storeAdminDesc').value.trim();
-      const mapUrl = document.getElementById('storeAdminMap').value.trim();
-      const color  = document.getElementById('storeAdminColor').value || '#ffffff';
-      const errEl  = document.getElementById('storeAdminError');
-      if (!name)   { errEl.textContent = '⚠️ يرجى إدخال اسم المتجر'; errEl.style.display = 'block'; return; }
-      if (!mapUrl) { errEl.textContent = '⚠️ يرجى إدخال رابط Google Maps'; errEl.style.display = 'block'; return; }
-      btn.disabled = true; btn.textContent = '...جارٍ الحفظ';
-      try {
-        await updateDoc(doc(db, 'mağazalar', docId), {
-          name, icon, desc, mapUrl, color,
-          image: storePendingImage || null
-        });
-        storeAdminClear();
-        btn.textContent = '✦ إضافة المتجر';
-        btn.onclick = storeAdminSave;
-      } catch(e) {
-        errEl.textContent = '⚠️ فشل التعديل: ' + e.message;
-        errEl.style.display = 'block';
-      }
-      btn.disabled = false;
-    };
-    // Forma kaydır
-    document.getElementById('store-admin-panel').scrollIntoView({ behavior: 'smooth' });
   }
 
   document.querySelectorAll('.fade-in').forEach((el, i) => {
