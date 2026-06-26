@@ -3674,7 +3674,7 @@ window.storePreviewImage = function(input) {
     getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
     updateDoc, query, orderBy, onSnapshot, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   // Mevcut Firebase uygulamasını yeniden kullan (zaten başlatıldıysa)
   const firebaseConfig = {
     apiKey: "AIzaSyDJ1_f4PIHcMS2qsHRx-0PCaxRkebDI9Eo",
@@ -4190,6 +4190,13 @@ ${itemLines}
     const btn = document.querySelector('.ann-btn-add');
     if (btn) { btn.disabled = true; btn.innerHTML = '...جارٍ النشر'; }
     try {
+      const auth = getAuth();
+const user = auth.currentUser;
+
+if (!user) {
+  alert("Oturum açık değil!");
+  return;
+}
       await addDoc(collection(annDb, 'announcements'), {
         text, color: annSelectedColor, icon: annSelectedIcon,
         createdAt: serverTimestamp()
