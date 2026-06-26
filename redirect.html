@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -604,13 +605,14 @@
     all.forEach(btn => {
       const a = document.createElement('a');
       a.href = btn.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
       a.className = 'action-btn ' + (
         btn.type === 'buy'     ? 'btn-buy'     :
         btn.type === 'website' ? 'btn-website'  : 'btn-custom'
       );
       a.innerHTML = `<span class="btn-icon">${btn.icon}</span>${btn.label}`;
+      a.addEventListener('click', function() {
+        localStorage.removeItem('visited');
+      });
       wrap.appendChild(a);
     });
   }
