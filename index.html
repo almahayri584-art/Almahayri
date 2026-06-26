@@ -4122,6 +4122,13 @@ ${itemLines}
     shopListenProducts();
   }
 </script>
+  <script>
+  if (window.location.hash === '#shop' || new URLSearchParams(window.location.search).get('shop') === '1') {
+    window.addEventListener('load', function() {
+      setTimeout(openShopSection, 300);
+    });
+  }
+</script>
 </body>
 </html>
 <script type="module">
