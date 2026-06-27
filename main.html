@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -8,7 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="main.css">
 </head>
-  <body>
+<script src="main.js"></script>
+<body>
   <!-- Floating Buy Button - Mobile Only -->
 <div id="floatingStoreBtn" style="
   display: none;
@@ -50,19 +50,8 @@
   ">🛒 مراكز البيع؟</a>
 </div>
 
-<script>
-  // Sadece mobilde göster
-  function checkMobile() {
-    var btn = document.getElementById('floatingStoreBtn');
-    if (window.innerWidth <= 768) {
-      btn.style.display = 'flex';
-    } else {
-      btn.style.display = 'none';
-    }
-  }
-  checkMobile();
-  window.addEventListener('resize', checkMobile);
-</script>
+
+
 
 <!-- NAVBAR -->
 <nav class="navbar" id="navbar">
@@ -557,27 +546,6 @@
   </div>
 </footer>
 
-<!-- Navbar JS -->
-<script>
-  // Scroll effect
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Hamburger toggle
-  function toggleNav() {
-    const links = document.getElementById('nav-links');
-    const btn   = document.getElementById('nav-hamburger');
-    links.classList.toggle('open');
-    btn.classList.toggle('open');
-  }
-
-  function closeNav() {
-    document.getElementById('nav-links').classList.remove('open');
-    document.getElementById('nav-hamburger').classList.remove('open');
-  }
-
-</script>
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -1499,22 +1467,6 @@ window.storePreviewImage = function(input) {
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   // Mevcut Firebase uygulamasını yeniden kullan (zaten başlatıldıysa)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDJ1_f4PIHcMS2qsHRx-0PCaxRkebDI9Eo",
-    authDomain: "yorum-8b483.firebaseapp.com",
-    projectId: "yorum-8b483",
-    storageBucket: "yorum-8b483.firebasestorage.app",
-    messagingSenderId: "331392423628",
-    appId: "1:331392423628:web:9a4b54b64217b06c91d469"
-  };
-  let shopApp;
-  const existingApps = getApps();
-  const namedApp = existingApps.find(a => a.name === 'shop');
-  if (namedApp) {
-    shopApp = namedApp;
-  } else {
-    shopApp = initializeApp(firebaseConfig, 'shop');
-  }
   const shopDb  = getFirestore(shopApp);
   const productsCol = collection(shopDb, 'products');
 
@@ -1945,13 +1897,6 @@ ${itemLines}
     shopListenProducts();
   }
 </script>
-  <script>
-  if (window.location.hash === '#shop' || new URLSearchParams(window.location.search).get('shop') === '1') {
-    window.addEventListener('load', function() {
-      setTimeout(openShopSection, 300);
-    });
-  }
-</script>
 </body>
 </html>
 <script type="module">
@@ -1962,14 +1907,6 @@ ${itemLines}
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   /* ── Firebase'i mevcut shop instance'ından al ── */
-  const firebaseConfig = {
-    apiKey: "AIzaSyDJ1_f4PIHcMS2qsHRx-0PCaxRkebDI9Eo",
-    authDomain: "yorum-8b483.firebaseapp.com",
-    projectId: "yorum-8b483",
-    storageBucket: "yorum-8b483.firebasestorage.app",
-    messagingSenderId: "331392423628",
-    appId: "1:331392423628:web:9a4b54b64217b06c91d469"
-  };
   let annApp;
   const existingApps = getApps();
   const namedApp = existingApps.find(a => a.name === 'shop');
