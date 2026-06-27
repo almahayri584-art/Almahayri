@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -275,7 +276,7 @@
     projectId: "yorum-8b483",
     storageBucket: "yorum-8b483.firebasestorage.app",
     messagingSenderId: "331392423628",
-    appId: "1:331392423648:web:9a4b54b64217b06c91d469"
+    appId: "1:331392423628:web:9a4b54b64217b06c91d469"
   };
 
   // Firebase'i başlat (eğer yoksa)
@@ -290,63 +291,7 @@
     window.location.href = 'main.html';
   }
 
-  // Admin logout
-  window.shopAdminLogout = async function() {
-    await signOut(shopAuth);
-    localStorage.removeItem('almahayri_admin');
-    document.getElementById('shopAdminPanel').classList.remove('open');
-    document.getElementById('shopProductsGrid').classList.remove('shop-admin-mode');
-    shopRenderProducts();
-  }
 
-  // Admin toggle bar
-  window.shopToggleAdminBar = function() {
-    const panel = document.getElementById('shopAdminPanel');
-    const icon  = document.getElementById('shopToggleIcon');
-    shopBarOpen = !shopBarOpen;
-    panel.classList.toggle('open', shopBarOpen);
-    icon.textContent = shopBarOpen ? '▴' : '▾';
-    if (shopBarOpen) {
-      // Admin girişi kontrolü
-      const isLoggedIn = localStorage.getItem('almahayri_admin') === 'true';
-      if (!isLoggedIn) {
-        // Giriş formu göster
-        const email = prompt('البريد الإلكتروني:');
-        const pass  = prompt('كلمة المرور:');
-        if (email && pass) {
-          signInWithEmailAndPassword(shopAuth, email, pass)
-            .then(() => {
-              localStorage.setItem('almahayri_admin', 'true');
-              shopRenderProducts();
-            })
-            .catch(() => {
-              alert('⚠️ بيانات دخول غير صحيحة');
-              shopBarOpen = false;
-              panel.classList.remove('open');
-              icon.textContent = '▾';
-            });
-        } else {
-          shopBarOpen = false;
-          panel.classList.remove('open');
-          icon.textContent = '▾';
-        }
-      }
-    }
-  }
-
-  // Auth state listener
-  onAuthStateChanged(shopAuth, (user) => {
-    if (user) {
-      localStorage.setItem('almahayri_admin', 'true');
-      loadShopTgSettings();
-    } else {
-      localStorage.removeItem('almahayri_admin');
-    }
-    shopRenderProducts();
-  });
-
-  const shopDb  = getFirestore(shopApp);
-  const productsCol = collection(shopDb, 'products');
 
   // ── Durum ──
   let shopProducts    = [];
